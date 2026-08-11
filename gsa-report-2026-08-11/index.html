@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Bento Moto &mdash; Google Search Ads Performance Review</title>
+<style>
+  :root {
+    --navy:            #001f52;
+    --navy-deep:       #000a1f;
+    --heading-navy:    #0a2540;
+    --brand-blue:      #1B51A4;
+    --accent-blue:     #3B82F6;
+    --accent-cyan:     #06B6D4;
+
+    --ink:             #0a1628;
+    --ink-body:        #3b4563;
+    --ink-muted:       #6b7a99;
+    --ink-subtle:      #8b95ad;
+
+    --surface:         #ffffff;
+    --surface-raised:  #f8f9fc;
+    --surface-cool:    #f0f3fa;
+
+    --border:          #e2e8f0;
+    --border-subtle:   #eef2f7;
+
+    --series:          #1B51A4;
+    --series-soft:     rgba(27, 81, 164, 0.13);
+    --series-muted:    #b9c4d8;
+    --grid:            #e8edf6;
+
+    --good:            #1d7a44;
+    --good-bg:         #e7f4ec;
+    --watch:           #9a6207;
+    --watch-bg:        #fdf4e3;
+    --flag:            #a13b2a;
+    --flag-bg:         #fbeae6;
+
+    --font-head: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-data: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    --chart-surface:   #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink-body);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-head);
+    color: var(--heading-navy);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    background: linear-gradient(165deg, #020817 0%, #001131 35%, #001f52 68%, #0c2d6b 100%);
+    padding: 56px 32px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .masthead::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .masthead-orb {
+    position: absolute;
+    width: 620px;
+    height: 620px;
+    right: -180px;
+    top: -280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.16) 0%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .masthead-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #38bdf8;
+    margin: 0 0 14px;
+  }
+
+  .masthead h1 {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.022em;
+    margin-bottom: 18px;
+  }
+
+  .masthead .standfirst {
+    color: #b4c6e0;
+    font-size: 1.08rem;
+    max-width: 640px;
+    margin: 0 0 30px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(251,234,230,0.13);
+    border: 1px solid rgba(255,180,160,0.34);
+    color: #ffd9cf;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 6px 13px;
+    border-radius: 999px;
+    margin: 0 0 26px;
+  }
+
+  .status-pill .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ff8a6b;
+    flex: 0 0 auto;
+  }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    padding-top: 26px;
+    border-top: 1px solid rgba(255,255,255,0.11);
+  }
+
+  .meta-item .k {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: rgba(255,255,255,0.42);
+    margin-bottom: 3px;
+  }
+
+  .meta-item .v {
+    font-size: 14px;
+    color: #dce6f5;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- shell ---------- */
+
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px 96px;
+  }
+
+  section { padding-top: 68px; }
+  section.tight { padding-top: 52px; }
+
+  .sec-head { margin-bottom: 30px; }
+
+  .sec-head .eyebrow { color: var(--accent-blue); }
+
+  .sec-head h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.18;
+    margin-bottom: 10px;
+  }
+
+  .sec-head p {
+    margin: 0;
+    color: var(--ink-muted);
+    max-width: 68ch;
+  }
+
+  h3 {
+    font-size: 1.16rem;
+    font-weight: 700;
+    line-height: 1.32;
+    margin-bottom: 8px;
+  }
+
+  p { margin: 0 0 1em; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---------- kpi band ---------- */
+
+  .kpi-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: -34px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+  }
+
+  .kpi {
+    background: var(--surface);
+    padding: 24px 22px 22px;
+  }
+
+  .kpi .label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-subtle);
+    margin-bottom: 10px;
+  }
+
+  .kpi .value {
+    font-family: var(--font-head);
+    font-size: 2.1rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .kpi .value .unit {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .kpi .sub {
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin-top: 9px;
+    line-height: 1.45;
+  }
+
+  .delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .delta.up { color: var(--good); background: var(--good-bg); }
+  .delta.watch { color: var(--watch); background: var(--watch-bg); }
+  .delta.flag { color: var(--flag); background: var(--flag-bg); }
+
+  /* ---------- prose + callouts ---------- */
+
+  .lede {
+    font-size: 1.1rem;
+    color: var(--ink-body);
+    max-width: 68ch;
+  }
+
+  .note {
+    border-left: 3px solid var(--brand-blue);
+    padding: 4px 0 4px 18px;
+    color: var(--ink-body);
+    margin: 22px 0;
+    max-width: 66ch;
+  }
+
+  .note strong { color: var(--heading-navy); }
+  .note.flag { border-left-color: var(--flag); }
+
+  /* ---------- finding cards ---------- */
+
+  .findings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .finding {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0 0 22px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .finding .bar {
+    height: 3px;
+    background: linear-gradient(135deg, #1B51A4, #3B82F6, #06B6D4);
+  }
+
+  .finding .body { padding: 20px 22px 0; }
+
+  .finding .stat {
+    font-family: var(--font-head);
+    font-size: 1.85rem;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .finding .statsub {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    color: var(--ink-subtle);
+    margin-bottom: 13px;
+  }
+
+  .finding h3 { margin-bottom: 7px; }
+
+  .finding p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin: 0;
+  }
+
+  .fixed-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 14px 22px 0;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--good);
+    background: var(--good-bg);
+    padding: 3px 9px;
+    border-radius: 999px;
+    align-self: flex-start;
+  }
+
+  /* ---------- figures ---------- */
+
+  figure {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px 18px;
+  }
+
+  figcaption { margin-bottom: 4px; }
+
+  figcaption .title {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--heading-navy);
+    line-height: 1.35;
+  }
+
+  figcaption .desc {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 4px;
+    max-width: 74ch;
+  }
+
+  .chart-host { margin-top: 16px; position: relative; }
+  .chart-host svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .smalls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .axis-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    fill: var(--ink-subtle);
+    font-family: var(--font-body);
+  }
+
+  .tick {
+    font-size: 10.5px;
+    fill: var(--ink-subtle);
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .baseline { stroke: var(--border); stroke-width: 1; }
+
+  .mark { fill: var(--series); }
+  .mark-dim { fill: var(--series-muted); }
+  .mark-soft { fill: var(--series-soft); }
+  .mark-line { fill: none; stroke: var(--series); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+
+  .band { fill: rgba(27,81,164,0.055); }
+
+  .dlabel {
+    font-size: 11.5px;
+    font-weight: 700;
+    fill: var(--ink);
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hit { fill: transparent; cursor: default; }
+
+  .tip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--heading-navy);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    padding: 7px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 120ms;
+    z-index: 5;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+  }
+
+  .tip.on { opacity: 1; }
+
+  .crosshair { stroke: var(--ink-subtle); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0; }
+  .crosshair.on { opacity: 1; }
+
+  .dot-focus {
+    fill: var(--series);
+    stroke: var(--chart-surface);
+    stroke-width: 2;
+    opacity: 0;
+  }
+  .dot-focus.on { opacity: 1; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .legend i {
+    width: 11px; height: 11px; border-radius: 3px;
+    display: inline-block; flex: 0 0 auto;
+  }
+  .legend i.on  { background: var(--series); }
+  .legend i.off { background: var(--series-muted); }
+
+  /* ---------- tables ---------- */
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 520px;
+  }
+
+  caption {
+    text-align: left;
+    font-family: var(--font-head);
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--heading-navy);
+    padding-bottom: 10px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  thead th {
+    background: var(--surface-raised);
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.num, th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  tbody th {
+    font-weight: 600;
+    color: var(--heading-navy);
+    font-size: 14px;
+  }
+
+  tr.total th, tr.total td {
+    background: var(--surface-raised);
+    font-weight: 700;
+    color: var(--heading-navy);
+  }
+
+  details.data-view {
+    margin-top: 14px;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 12px;
+  }
+
+  details.data-view summary {
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--brand-blue);
+    list-style: none;
+  }
+
+  details.data-view summary::-webkit-details-marker { display: none; }
+  details.data-view summary::before { content: "\25B8  "; }
+  details.data-view[open] summary::before { content: "\25BE  "; }
+  details.data-view summary:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 3px; border-radius: 4px; }
+  details.data-view .table-wrap { margin-top: 12px; }
+
+  /* ---------- work log ---------- */
+
+  .worklog {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .worklog-row {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 24px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .worklog-row:last-child { border-bottom: none; }
+  .worklog-row:nth-child(odd) { background: var(--surface-raised); }
+
+  .worklog-row .what {
+    font-family: var(--font-head);
+    font-weight: 700;
+    color: var(--heading-navy);
+    font-size: 14.5px;
+  }
+
+  .worklog-row .detail { font-size: 14px; color: var(--ink-muted); }
+
+  /* ---------- next steps ---------- */
+
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 20px 46px;
+    border-left: 1px solid var(--border);
+    margin-left: 14px;
+  }
+
+  .steps li:last-child { border-left-color: transparent; padding-bottom: 0; }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: -14px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps li h3 { margin-bottom: 4px; }
+  .steps li p { font-size: 14px; color: var(--ink-muted); }
+
+  /* ---------- footer ---------- */
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 76px;
+    padding-top: 26px;
+    font-size: 12.5px;
+    color: var(--ink-subtle);
+    max-width: 78ch;
+  }
+
+  footer p { margin-bottom: 0.6em; }
+
+  a { color: var(--brand-blue); }
+  a:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; border-radius: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  @media (max-width: 900px) {
+    .kpi-band { grid-template-columns: repeat(2, 1fr); }
+    .findings { grid-template-columns: 1fr; }
+    .smalls { grid-template-columns: 1fr; }
+    .masthead h1 { font-size: 2.3rem; }
+    .sec-head h2 { font-size: 1.65rem; }
+    main, .masthead { padding-left: 22px; padding-right: 22px; }
+    .worklog-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  @media (max-width: 560px) {
+    .kpi-band { grid-template-columns: 1fr; }
+    .masthead h1 { font-size: 1.95rem; }
+  }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-orb"></div>
+  <div class="masthead-inner">
+    <p class="eyebrow">Google Search Ads &middot; Performance Review</p>
+    <h1>The first 23 days told us<br>exactly what to fix.</h1>
+    <p class="standfirst">
+      Bento Moto's search campaign proved there is real demand &mdash; nearly one in twenty
+      people who saw the ad clicked it. But the campaign was set up in a way that spent a
+      large share of the budget on people who were never going to order, and it sent the
+      ones who were to the wrong page. Both are now fixed.
+    </p>
+    <p class="status-pill"><span class="dot"></span> Campaign paused since August 4 &mdash; not currently spending</p>
+    <div class="meta-strip">
+      <div class="meta-item">
+        <span class="k">Location</span>
+        <span class="v">Oakdale, MN</span>
+      </div>
+      <div class="meta-item">
+        <span class="k">First ads served</span>
+        <span class="v">July 13, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="k">Reporting period</span>
+        <span class="v">Jul 13 &ndash; Aug 4, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="k">Prepared</span>
+        <span class="v">Aug 11, 2026</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="kpi-band">
+    <div class="kpi">
+      <div class="label">People who saw you</div>
+      <div class="value">12,295</div>
+      <div class="sub">ad impressions over 23 days</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Visits to your site</div>
+      <div class="value">599</div>
+      <div class="sub">
+        <span class="delta up">4.87% click rate</span> well above average
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="label">Cost per visit</div>
+      <div class="value"><span class="unit">$</span>0.178</div>
+      <div class="sub">$106.39 total, about $4.63 a day</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Online orders tracked</div>
+      <div class="value">2</div>
+      <div class="sub">
+        <span class="delta flag">$57.52 revenue</span> the problem this report solves
+      </div>
+    </div>
+  </div>
+
+  <section class="tight">
+    <p class="lede">
+      Over 23 days the campaign spent <strong>$106.39</strong> and brought
+      <strong>599 people</strong> to your website at just under 18&cent; each. Those
+      visitors took <strong>1,042 follow-up actions</strong> &mdash; pulling up your menu,
+      requesting directions, tapping to call. The interest is genuinely there.
+    </p>
+    <p class="lede">
+      But only <strong>two online orders</strong> were tracked back to those ads, worth
+      <strong>$57.52</strong>. Against $106.39 of spend that is a return of
+      <strong>0.54&times;</strong> &mdash; roughly 54&cent; of revenue for every dollar
+      spent. That gap between strong interest and almost no orders is not a demand problem.
+      It is a setup problem, and we found five specific causes.
+    </p>
+    <div class="note flag">
+      <strong>The single biggest one:</strong> every ad click landed on your homepage
+      rather than your online ordering page. Someone searching &ldquo;sushi near me&rdquo;
+      at 6pm arrived at your front page and had to go looking for the order button. That
+      alone is enough to explain most of the missing orders.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">What we found</p>
+      <h2>Five things working against the campaign</h2>
+      <p>
+        Each of these was verified directly in the Google Ads account on August 11. All
+        five have now been corrected while the campaign is paused &mdash; nothing is
+        spending money in the meantime.
+      </p>
+    </div>
+
+    <div class="findings">
+      <div class="finding">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="stat">599 / 599</div>
+          <div class="statsub">clicks sent to the wrong page</div>
+          <h3>Ads pointed at your homepage, not your order page</h3>
+          <p>
+            The ad copy promised &ldquo;order online&rdquo; but the link went to
+            bentomoto.com's front page instead of your ordering menu. Every extra tap
+            between a hungry searcher and a checkout button loses orders.
+          </p>
+        </div>
+        <span class="fixed-tag">&#10003; Fixed Aug 11</span>
+      </div>
+
+      <div class="finding">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="stat">$24.24</div>
+          <div class="statsub">at minimum, on unqualified clicks</div>
+          <h3>No search terms were being blocked</h3>
+          <p>
+            The campaign had zero blocked terms, so it paid for searches like
+            &ldquo;hibachi near me&rdquo;, &ldquo;all you can eat sushi&rdquo;,
+            &ldquo;buffet&rdquo;, rival restaurants by name, and even
+            &ldquo;domino's pizza&rdquo;.
+          </p>
+        </div>
+        <span class="fixed-tag">&#10003; Fixed Aug 11</span>
+      </div>
+
+      <div class="finding">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="stat">$30.50</div>
+          <div class="statsub">28.7% of spend while closed</div>
+          <h3>Ads ran around the clock, including Sundays</h3>
+          <p>
+            There was no schedule set, so ads served 24/7 &mdash; overnight, before your
+            11am open, and all day Sunday when you are closed. $6.40 went to Sundays
+            alone.
+          </p>
+        </div>
+        <span class="fixed-tag">&#10003; Fixed Aug 11</span>
+      </div>
+
+      <div class="finding">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="stat">40 / 40</div>
+          <div class="statsub">keywords on the loosest setting</div>
+          <h3>Every keyword used broad matching</h3>
+          <p>
+            Broad match lets Google show your ad for anything it considers related, which
+            is how &ldquo;sushi near me&rdquo; became your single largest cost at $21.63
+            with no orders. Google rated several of these keywords 1&ndash;3 out of 10 for
+            relevance.
+          </p>
+        </div>
+        <span class="fixed-tag">&#10003; Partly fixed &mdash; see step 1</span>
+      </div>
+
+      <div class="finding">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="stat">$5.11</div>
+          <div class="statsub">on banner ads, zero actions</div>
+          <h3>Ads were also running on the Display network</h3>
+          <p>
+            Alongside Google search results, the campaign was placing banner ads across
+            other websites. Those clicks cost 43&cent; each &mdash; more than double your
+            search clicks &mdash; and produced no menu views, directions or orders at all.
+          </p>
+        </div>
+        <span class="fixed-tag">&#10003; Fixed Aug 11</span>
+      </div>
+
+      <div class="finding">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="stat">$5.08</div>
+          <div class="statsub">spent on your own name</div>
+          <h3>You were paying to appear for &ldquo;Bento Moto&rdquo;</h3>
+          <p>
+            Searches like &ldquo;bento moto menu&rdquo; and &ldquo;bento moto oakdale&rdquo;
+            cost real money, and those people were already looking for you specifically.
+            Worth revisiting once the rest is tightened up.
+          </p>
+        </div>
+        <span class="fixed-tag" style="color:var(--watch);background:var(--watch-bg)">Flagged for review</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Where the money went</p>
+      <h2>Roughly a quarter of the budget was never going to return an order</h2>
+      <p>
+        We reviewed the 45 highest-cost searches that triggered your ads, which together
+        account for $59.10 &mdash; 56% of total spend. Grouping them shows the pattern
+        clearly. The remaining $47.29 sits in a long tail of individually tiny searches
+        that we have not categorised here.
+      </p>
+    </div>
+
+    <figure>
+      <figcaption>
+        <span class="title">The 45 costliest searches, grouped by whether they could realistically become an order</span>
+        <span class="desc">Only the first group describes someone plausibly looking for Bento Moto. Everything below it is money spent reaching people who wanted something else, somewhere else, or who already knew your name.</span>
+      </figcaption>
+      <div class="chart-host" id="host-waste">
+        <div class="tip" id="tip-waste"></div>
+      </div>
+      <details class="data-view">
+        <summary>View the numbers, with examples</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Group</th>
+                <th scope="col" class="num">Spend</th>
+                <th scope="col" class="num">Clicks</th>
+                <th scope="col">Examples from your account</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">On-target local searches</th>
+                <td class="num">$29.78</td>
+                <td class="num">219</td>
+                <td>sushi near me, japanese food near me, sushi in oakdale, woodbury sushi</td>
+              </tr>
+              <tr>
+                <th scope="row">Things not on your menu</th>
+                <td class="num">$10.73</td>
+                <td class="num">57</td>
+                <td>hibachi near me, buffet near me, all you can eat sushi, chinese food, domino's pizza</td>
+              </tr>
+              <tr>
+                <th scope="row">Other restaurants by name</th>
+                <td class="num">$8.30</td>
+                <td class="num">11</td>
+                <td>osaka coon rapids ($4.15 for one click), tokyo sushi, oishii sushi, bamboo kitchen, fresh wok</td>
+              </tr>
+              <tr>
+                <th scope="row">Outside your delivery area</th>
+                <td class="num">$5.21</td>
+                <td class="num">11</td>
+                <td>asian restaurant minneapolis, forest lake asian food, takeout sushi minneapolis</td>
+              </tr>
+              <tr>
+                <th scope="row">Your own name</th>
+                <td class="num">$5.08</td>
+                <td class="num">15</td>
+                <td>bento moto menu, bento moto oakdale, bento moto oakdale mn</td>
+              </tr>
+              <tr class="total">
+                <th scope="row">Reviewed subtotal</th>
+                <td class="num">$59.10</td>
+                <td class="num">313</td>
+                <td>56% of total spend</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </figure>
+
+    <div class="note">
+      <strong>One search term is worth singling out.</strong> A single click from someone
+      searching &ldquo;osaka coon rapids&rdquo; &mdash; a different restaurant, 30 miles
+      away &mdash; cost <strong>$4.15</strong>. That is 23 times your average click price,
+      spent on a person who was looking for somebody else entirely.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Timing</p>
+      <h2>A lot of the spend happened while your doors were shut</h2>
+      <p>
+        Bento Moto serves 11am&ndash;8pm Monday to Friday, 3pm&ndash;8pm Saturday, and is
+        closed Sunday. The campaign had no schedule at all, so it kept bidding through
+        every closed hour of the week.
+      </p>
+    </div>
+
+    <figure>
+      <figcaption>
+        <span class="title">Clicks by hour of day</span>
+        <span class="desc">Shaded band is weekday opening hours, 11am&ndash;8pm. Demand tracks your service day well &mdash; a lunch peak at 11am and a second dinner peak at 3&ndash;5pm &mdash; but a meaningful share of clicks arrived when nobody could take the order.</span>
+      </figcaption>
+      <div class="chart-host" id="host-hours">
+        <div class="tip" id="tip-hours"></div>
+      </div>
+      <div class="legend">
+        <span><i class="on"></i> Weekday opening hours</span>
+        <span><i class="off"></i> Outside weekday opening hours</span>
+      </div>
+    </figure>
+
+    <div class="smalls" style="margin-top:18px;">
+      <figure>
+        <figcaption>
+          <span class="title">Average clicks per day, by day of week</span>
+          <span class="desc">Averaged per occurrence, so an uneven number of each weekday doesn't distort the picture. Sunday is greyed out &mdash; you are closed, yet it still drew 21.7 clicks a day.</span>
+        </figcaption>
+        <div class="chart-host" id="host-dow">
+          <div class="tip" id="tip-dow"></div>
+        </div>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <span class="title">Spend inside vs. outside opening hours</span>
+          <span class="desc">Calculated day-by-day and hour-by-hour against your actual trading hours, so Saturday's 3pm open and the Sunday closure are both accounted for.</span>
+        </figcaption>
+        <div class="chart-host" id="host-open">
+          <div class="tip" id="tip-open"></div>
+        </div>
+      </figure>
+    </div>
+
+    <div class="note">
+      <strong>Nine in ten of your clicks come from a phone</strong> &mdash; 557 of 599.
+      Mobile searchers clicked at 4.97% versus 3.81% on desktop. That is exactly the
+      behaviour you want for a neighbourhood takeout restaurant: people searching while
+      they are out and hungry. It also means the page they land on has to work on a phone,
+      which is another reason the ordering page beats the homepage.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Traffic over time</p>
+      <h2>The 23-day run, day by day</h2>
+      <p>
+        Impressions and clicks are measured on different scales, so they are shown
+        separately rather than forced onto one axis. Both series end on August 4, the day
+        the campaign was paused.
+      </p>
+    </div>
+
+    <div class="smalls">
+      <figure>
+        <figcaption>
+          <span class="title">Daily ad impressions</span>
+          <span class="desc">Averaged 535 a day, with weekend peaks approaching 1,000.</span>
+        </figcaption>
+        <div class="chart-host" id="host-impr">
+          <div class="tip" id="tip-impr"></div>
+        </div>
+      </figure>
+      <figure>
+        <figcaption>
+          <span class="title">Daily clicks to your site</span>
+          <span class="desc">Averaged 26 a day. The final day is partial &mdash; the campaign was paused mid-morning.</span>
+        </figcaption>
+        <div class="chart-host" id="host-clicks">
+          <div class="tip" id="tip-clicks"></div>
+        </div>
+      </figure>
+    </div>
+
+    <details class="data-view">
+      <summary>View the daily numbers</summary>
+      <div class="table-wrap">
+        <table id="daily-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col" class="num">Impressions</th>
+              <th scope="col" class="num">Clicks</th>
+              <th scope="col" class="num">Click-through rate</th>
+              <th scope="col" class="num">Spend</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">What the clicks did</p>
+      <h2>Plenty of engagement, almost no completed orders</h2>
+      <p>
+        Google recorded 1,044 tracked actions in total. It matters a great deal which ones
+        are actual revenue and which are just signs of interest, because mixing them
+        together makes a campaign look far healthier than it is.
+      </p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Tracked action</th>
+            <th scope="col" class="num">Count</th>
+            <th scope="col">What it means</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Bento Moto online orders</th>
+            <td class="num">2</td>
+            <td><strong>Real revenue &mdash; $57.52.</strong> This is the only line that represents money taken.</td>
+          </tr>
+          <tr>
+            <th scope="row">Site engagement</th>
+            <td class="num">659</td>
+            <td>Scrolling, tapping, time on page. Interest, not income.</td>
+          </tr>
+          <tr>
+            <th scope="row">Menu views</th>
+            <td class="num">153</td>
+            <td>Opened your menu. Strong intent that did not convert.</td>
+          </tr>
+          <tr>
+            <th scope="row">Directions requests</th>
+            <td class="num">114</td>
+            <td>Looked up how to reach you &mdash; may well have become walk-in business we cannot track.</td>
+          </tr>
+          <tr>
+            <th scope="row">Website visits</th>
+            <td class="num">99</td>
+            <td>Clicked through from your Google listing.</td>
+          </tr>
+          <tr>
+            <th scope="row">Checkout starts</th>
+            <td class="num">11</td>
+            <td>Began an order but did not finish it.</td>
+          </tr>
+          <tr>
+            <th scope="row">Calls and tap-to-call</th>
+            <td class="num">6</td>
+            <td>Phone orders are likely under-counted here.</td>
+          </tr>
+          <tr class="total">
+            <th scope="row">Total tracked actions</th>
+            <td class="num">1,044</td>
+            <td>Of which 2 are orders</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Being straight about the return:</strong> $57.52 of order revenue against
+      $106.39 of spend is <strong>0.54&times;</strong>. We could quote a much prettier
+      number by counting all 1,044 actions as if each were worth a dollar &mdash; that
+      would read as 10&times; &mdash; but menu views are not money. The honest figure is
+      0.54&times;, and the point of the fixes below is to move it.
+    </div>
+
+    <div class="note">
+      <strong>Worth knowing:</strong> 11 people started a checkout and 153 opened the menu.
+      Those are people who wanted to order. With the ads now landing directly on the
+      ordering page instead of the homepage, that group is the most likely source of the
+      first real lift.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Work completed</p>
+      <h2>What we changed on August 11</h2>
+      <p>
+        All of the following was applied while the campaign is paused, so none of it has
+        spent anything yet. Each change was verified in the account after it was made.
+      </p>
+    </div>
+
+    <div class="worklog">
+      <div class="worklog-row">
+        <div class="what">Ads repointed to your ordering page</div>
+        <div class="detail">
+          The ad now links straight to <strong>bentomoto.com/store/23393</strong> instead
+          of the homepage, so a click lands on the menu with an order button. Google
+          required this to be published as a new version of the ad, which is normal and
+          keeps all the existing headlines and wording.
+        </div>
+      </div>
+      <div class="worklog-row">
+        <div class="what">20 search terms blocked</div>
+        <div class="detail">
+          Rival restaurants (Osaka, Tokyo Sushi, Oishii, Bamboo Kitchen, Fresh Wok),
+          dishes you don't serve (hibachi, buffet, all-you-can-eat, Chinese, Thai, pizza,
+          dango), towns outside your radius (Minneapolis, Coon Rapids, Forest Lake,
+          Minnetonka) and non-customer searches (jobs, hiring, careers, recipes).
+        </div>
+      </div>
+      <div class="worklog-row">
+        <div class="what">Ad schedule set to your trading hours</div>
+        <div class="detail">
+          Ads now run 11am&ndash;8pm Monday to Friday and 3pm&ndash;8pm Saturday, and do
+          not run at all on Sunday. This is the change that reclaims the $30.50 that had
+          been going to closed hours.
+        </div>
+      </div>
+      <div class="worklog-row">
+        <div class="what">Display network switched off</div>
+        <div class="detail">
+          The campaign now runs on Google search results only. Banner placements were
+          costing 43&cent; a click and delivering nothing measurable.
+        </div>
+      </div>
+      <div class="worklog-row">
+        <div class="what">Location targeting tightened to &ldquo;presence&rdquo;</div>
+        <div class="detail">
+          Previously the 8-mile radius also included people merely
+          <em>interested</em> in the area &mdash; Google's default, and the reason
+          Minneapolis and St Paul searches were getting through. Ads now show only to
+          people actually in your area.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Before relaunch</p>
+      <h2>What we recommend next</h2>
+      <p>
+        The campaign is still paused, and turning it back on is your call. These are the
+        remaining items, in the order they will matter most.
+      </p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>Rebuild the keyword list around terms that actually work</h3>
+        <p>
+          All 40 keywords are still on broad match. The fix is to keep the handful that
+          earned engagement &mdash; &ldquo;japanese food near me&rdquo;, &ldquo;sushi
+          restaurant oakdale&rdquo;, &ldquo;japanese restaurant near me&rdquo; &mdash; as
+          tighter phrase and exact matches, and retire the vague ones like plain
+          &ldquo;sushi&rdquo;. This is a rebuild rather than a toggle, so we have left it
+          for your sign-off rather than doing it unilaterally.
+        </p>
+      </li>
+      <li>
+        <h3>Replace two of the three ad links</h3>
+        <p>
+          Your ad currently offers &ldquo;Order Now&rdquo;, &ldquo;Our Story&rdquo; and
+          &ldquo;Press&rdquo;. The last two are interesting but they do not sell dinner.
+          Swapping them for &ldquo;Lunch Menu&rdquo;, &ldquo;Bento Boxes&rdquo; or
+          &ldquo;Ramen&rdquo; would give hungry searchers three ways into an order instead
+          of one.
+        </p>
+      </li>
+      <li>
+        <h3>Add the ad extras that are currently missing</h3>
+        <p>
+          The account has no callouts and no menu highlights attached &mdash; the short
+          phrases and dish lists that make an ad physically larger on the results page and
+          push competitors further down. Adding these costs nothing and typically lifts
+          click-through.
+        </p>
+      </li>
+      <li>
+        <h3>Then, and only then, look at budget</h3>
+        <p>
+          Your ads appeared for only 12% of relevant local searches. Budget explains 32%
+          of what you missed, but weak ad relevance explains 56% &mdash; so raising the
+          $5 daily budget before fixing relevance would mostly buy more of the same
+          unqualified clicks. Fix quality first, then spend more.
+        </p>
+      </li>
+      <li>
+        <h3>Re-check order tracking a week after relaunch</h3>
+        <p>
+          Because the landing page has changed, we want to confirm orders are being
+          attributed correctly before drawing conclusions from the new numbers. Two orders
+          is too small a sample to trust either way.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">For the record</p>
+      <h2>Account setup as it stands today</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Setting</th>
+            <th scope="col">Value before</th>
+            <th scope="col">Value now</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Campaign status</th><td>Paused Aug 4</td><td>Still paused &mdash; awaiting your go-ahead</td></tr>
+          <tr><th scope="row">Landing page</th><td>bentomoto.com homepage</td><td>bentomoto.com/store/23393</td></tr>
+          <tr><th scope="row">Blocked search terms</th><td>0</td><td>20</td></tr>
+          <tr><th scope="row">Ad schedule</th><td>None &mdash; ran 24/7</td><td>Mon&ndash;Fri 11am&ndash;8pm, Sat 3&ndash;8pm, closed Sun</td></tr>
+          <tr><th scope="row">Networks</th><td>Search, Search Partners, Display</td><td>Search and Search Partners only</td></tr>
+          <tr><th scope="row">Location targeting</th><td>8-mile radius, presence or interest</td><td>8-mile radius, presence only</td></tr>
+          <tr><th scope="row">Active keywords</th><td>40, all broad match</td><td>40, all broad match &mdash; see step 1</td></tr>
+          <tr><th scope="row">Ad extras attached</th><td>3 links, 1 promotion, logo</td><td>Unchanged &mdash; see steps 2 and 3</td></tr>
+          <tr><th scope="row">Daily budget</th><td>$5.00</td><td>$5.00 &mdash; unchanged deliberately</td></tr>
+          <tr><th scope="row">Bidding</th><td>Maximise conversions</td><td>Unchanged</td></tr>
+          <tr><th scope="row">Share of local searches won</th><td colspan="2">12% &mdash; 32% missed to budget, 56% missed to ad relevance</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Prepared by Chowly for Bento Moto &middot; August 11, 2026. Figures are pulled
+      directly from the restaurant's Google Ads account and cover July 13 to August 4,
+      2026 &mdash; the full period in which ads actually served. The campaign was paused
+      on August 4 and has not spent since.
+    </p>
+    <p>
+      &ldquo;Tracked actions&rdquo; counts menu views, directions requests, website
+      visits, checkout starts, calls and on-site engagement recorded by Google. With the
+      exception of the online orders line, these are engagement signals and not completed
+      sales. Google's local action reporting can lag by several days. Order revenue counts
+      only orders Google could match back to an ad click; phone and walk-in business
+      prompted by an ad is not captured.
+    </p>
+    <p>
+      The spend groupings in &ldquo;Where the money went&rdquo; are based on the 45
+      highest-cost search terms, which account for 56% of total spend. The remaining
+      long-tail spend has not been individually categorised, so figures quoted for
+      unqualified spend are floors rather than totals.
+    </p>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- data ---------------- */
+
+  var daily = [
+    { d: "Jul 13", impr: 200,  clicks: 10, cost: 6.13 },
+    { d: "Jul 14", impr: 218,  clicks: 15, cost: 5.00 },
+    { d: "Jul 15", impr: 450,  clicks: 24, cost: 5.25 },
+    { d: "Jul 16", impr: 627,  clicks: 24, cost: 4.44 },
+    { d: "Jul 17", impr: 604,  clicks: 35, cost: 2.86 },
+    { d: "Jul 18", impr: 632,  clicks: 29, cost: 1.39 },
+    { d: "Jul 19", impr: 195,  clicks: 11, cost: 0.41 },
+    { d: "Jul 20", impr: 379,  clicks: 20, cost: 1.78 },
+    { d: "Jul 21", impr: 272,  clicks: 15, cost: 9.99 },
+    { d: "Jul 22", impr: 988,  clicks: 36, cost: 3.12 },
+    { d: "Jul 23", impr: 712,  clicks: 44, cost: 9.46 },
+    { d: "Jul 24", impr: 762,  clicks: 38, cost: 9.99 },
+    { d: "Jul 25", impr: 638,  clicks: 38, cost: 5.02 },
+    { d: "Jul 26", impr: 558,  clicks: 29, cost: 3.93 },
+    { d: "Jul 27", impr: 583,  clicks: 24, cost: 8.47 },
+    { d: "Jul 28", impr: 400,  clicks: 22, cost: 5.27 },
+    { d: "Jul 29", impr: 337,  clicks: 13, cost: 6.02 },
+    { d: "Jul 30", impr: 682,  clicks: 34, cost: 3.71 },
+    { d: "Jul 31", impr: 647,  clicks: 27, cost: 2.96 },
+    { d: "Aug 1",  impr: 980,  clicks: 42, cost: 5.14 },
+    { d: "Aug 2",  impr: 522,  clicks: 25, cost: 2.06 },
+    { d: "Aug 3",  impr: 724,  clicks: 35, cost: 3.45 },
+    { d: "Aug 4",  impr: 185,  clicks: 9,  cost: 0.55 }
+  ];
+
+  var hours = [9,5,4,0,1,2,2,5,11,33,40,77,60,41,37,62,47,60,42,33,8,8,8,4];
+  var OPEN_FROM = 11, OPEN_TO = 19; /* weekday trading hours, inclusive */
+
+  var dow = [
+    { k: "Sun", v: 21.7, closed: true },
+    { k: "Mon", v: 22.2 },
+    { k: "Tue", v: 15.2 },
+    { k: "Wed", v: 24.3 },
+    { k: "Thu", v: 34.0 },
+    { k: "Fri", v: 33.3 },
+    { k: "Sat", v: 36.3 }
+  ];
+
+  var waste = [
+    { k: "On-target local",  full: "On-target local searches",     v: 29.78, c: 219 },
+    { k: "Not on menu",      full: "Things not on your menu",      v: 10.73, c: 57  },
+    { k: "Rival restaurants",full: "Other restaurants by name",    v: 8.30,  c: 11  },
+    { k: "Outside area",     full: "Outside your delivery area",   v: 5.21,  c: 11  },
+    { k: "Your own name",    full: "Your own name",                v: 5.08,  c: 15  }
+  ];
+
+  var openSplit = [
+    { k: "Open hours",   full: "Inside trading hours",  v: 75.90, c: 383 },
+    { k: "Closed hours", full: "Outside trading hours", v: 30.50, c: 216, dim: true }
+  ];
+
+  /* ---------------- helpers ---------------- */
+
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  function el(name, attrs) {
+    var n = document.createElementNS(SVGNS, name);
+    if (attrs) {
+      for (var k in attrs) {
+        if (Object.prototype.hasOwnProperty.call(attrs, k)) n.setAttribute(k, attrs[k]);
+      }
+    }
+    return n;
+  }
+
+  function fmt(n) { return n.toLocaleString("en-US"); }
+  function money(n) { return "$" + n.toFixed(2); }
+
+  /* max that divides into `ticks` whole, round steps — so no 18.75 axis labels */
+  function niceMax(v, ticks) {
+    ticks = ticks || 4;
+    var raw = v / ticks;
+    var mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    var steps = [1, 2, 2.5, 5, 10];
+    for (var i = 0; i < steps.length; i++) {
+      var step = steps[i] * mag;
+      if (step >= raw) return step * ticks;
+    }
+    return 10 * mag * ticks;
+  }
+
+  function barPathV(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h);
+    if (h <= 0.5) return "M" + x + " " + (y + h) + " h" + w;
+    return "M" + x + " " + (y + h) +
+           " V" + (y + r) +
+           " a" + r + " " + r + " 0 0 1 " + r + " " + (-r) +
+           " h" + (w - 2 * r) +
+           " a" + r + " " + r + " 0 0 1 " + r + " " + r +
+           " V" + (y + h) + " Z";
+  }
+
+  function barPathH(x, y, w, h, r) {
+    r = Math.min(r, h / 2, w);
+    if (w <= 0.5) return "M" + x + " " + y + " v" + h;
+    return "M" + x + " " + y +
+           " H" + (x + w - r) +
+           " a" + r + " " + r + " 0 0 1 " + r + " " + r +
+           " v" + (h - 2 * r) +
+           " a" + r + " " + r + " 0 0 1 " + (-r) + " " + r +
+           " H" + x + " Z";
+  }
+
+  function mkTip(hostId, tipId) {
+    var host = document.getElementById(hostId);
+    var tip = document.getElementById(tipId);
+    return {
+      show: function (html, cx, cy) {
+        tip.innerHTML = html;
+        tip.classList.add("on");
+        var hb = host.getBoundingClientRect();
+        var tb = tip.getBoundingClientRect();
+        var left = cx - tb.width / 2;
+        left = Math.max(2, Math.min(left, hb.width - tb.width - 2));
+        var top = cy - tb.height - 10;
+        if (top < 0) top = cy + 14;
+        tip.style.left = left + "px";
+        tip.style.top = top + "px";
+      },
+      hide: function () { tip.classList.remove("on"); }
+    };
+  }
+
+  function toHostPx(hostEl, svg, W, H) {
+    var r = svg.getBoundingClientRect();
+    return function (ux, uy) {
+      return { x: (ux / W) * r.width, y: (uy / H) * r.height };
+    };
+  }
+
+  /* ---------------- small-multiple area chart ---------------- */
+
+  function areaChart(hostId, tipId, key, unitLabel) {
+    var host = document.getElementById(hostId);
+    var tip = mkTip(hostId, tipId);
+
+    var W = 480, H = 210;
+    var m = { t: 20, r: 12, b: 34, l: 42 };
+    var iw = W - m.l - m.r;
+    var ih = H - m.t - m.b;
+
+    var vals = daily.map(function (d) { return d[key]; });
+    var max = niceMax(Math.max.apply(null, vals), 4);
+
+    var svg = el("svg", {
+      viewBox: "0 0 " + W + " " + H,
+      role: "img",
+      "aria-label": unitLabel + " per day, July 13 to August 4, 2026"
+    });
+
+    var x = function (i) { return m.l + (iw * i) / (daily.length - 1); };
+    var y = function (v) { return m.t + ih - (ih * v) / max; };
+
+    var TICKS = 4;
+    for (var t = 0; t <= TICKS; t++) {
+      var v = (max / TICKS) * t;
+      var gy = y(v);
+      svg.appendChild(el("line", {
+        class: t === 0 ? "baseline" : "gridline",
+        x1: m.l, x2: m.l + iw, y1: gy, y2: gy
+      }));
+      var lab = el("text", { class: "tick", x: m.l - 8, y: gy + 3.5, "text-anchor": "end" });
+      lab.textContent = v >= 1000 ? (v / 1000) + "k" : String(v);
+      svg.appendChild(lab);
+    }
+
+    var lineD = "";
+    daily.forEach(function (d, i) {
+      lineD += (i === 0 ? "M" : "L") + x(i) + " " + y(d[key]) + " ";
+    });
+    var areaD = lineD + "L" + x(daily.length - 1) + " " + y(0) + " L" + x(0) + " " + y(0) + " Z";
+
+    svg.appendChild(el("path", { class: "mark-soft", d: areaD }));
+    svg.appendChild(el("path", { class: "mark-line", d: lineD }));
+
+    [[0, "start"], [11, "middle"], [daily.length - 1, "end"]].forEach(function (p) {
+      var tx = el("text", {
+        class: "tick", x: x(p[0]), y: m.t + ih + 17, "text-anchor": p[1]
+      });
+      tx.textContent = daily[p[0]].d;
+      svg.appendChild(tx);
+    });
+
+    var ch = el("line", { class: "crosshair", y1: m.t, y2: m.t + ih });
+    svg.appendChild(ch);
+    var focus = el("circle", { class: "dot-focus", r: 4.5 });
+    svg.appendChild(focus);
+
+    var hit = el("rect", { class: "hit", x: m.l, y: m.t, width: iw, height: ih });
+    svg.appendChild(hit);
+
+    host.insertBefore(svg, host.firstChild);
+
+    function nearest(evt) {
+      var r = svg.getBoundingClientRect();
+      var ux = ((evt.clientX - r.left) / r.width) * W;
+      var i = Math.round(((ux - m.l) / iw) * (daily.length - 1));
+      return Math.max(0, Math.min(daily.length - 1, i));
+    }
+
+    function move(evt) {
+      var i = nearest(evt);
+      var d = daily[i];
+      var ux = x(i), uy = y(d[key]);
+      ch.setAttribute("x1", ux); ch.setAttribute("x2", ux);
+      ch.classList.add("on");
+      focus.setAttribute("cx", ux); focus.setAttribute("cy", uy);
+      focus.classList.add("on");
+      var p = toHostPx(host, svg, W, H)(ux, uy);
+      tip.show("<strong>" + d.d + "</strong><br>" + fmt(d[key]) + " " + unitLabel.toLowerCase() +
+               "<br>" + money(d.cost) + " spent", p.x, p.y);
+    }
+
+    function leave() {
+      ch.classList.remove("on");
+      focus.classList.remove("on");
+      tip.hide();
+    }
+
+    hit.addEventListener("mousemove", move);
+    hit.addEventListener("mouseleave", leave);
+    hit.addEventListener("touchmove", function (e) {
+      if (e.touches && e.touches[0]) move(e.touches[0]);
+    }, { passive: true });
+    hit.addEventListener("touchend", leave);
+  }
+
+  /* ---------------- vertical bars ---------------- */
+
+  function vBars(hostId, tipId, items, opts) {
+    var host = document.getElementById(hostId);
+    var tip = mkTip(hostId, tipId);
+
+    var W = opts.W || 980, H = opts.H || 240;
+    var m = { t: 22, r: 10, b: 38, l: 44 };
+    var iw = W - m.l - m.r;
+    var ih = H - m.t - m.b;
+
+    var max = niceMax(Math.max.apply(null, items.map(function (d) { return d.v; })), 4);
+    var slot = iw / items.length;
+    var GAP = 2;
+    var bw = Math.max(3, Math.min(slot - GAP * 2, opts.maxBar || 1e9));
+
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": opts.aria });
+
+    var y = function (v) { return m.t + ih - (ih * v) / max; };
+
+    /* opening-hours band, drawn behind the bars */
+    if (opts.bandFrom !== undefined) {
+      var bx0 = m.l + slot * opts.bandFrom;
+      var bx1 = m.l + slot * (opts.bandTo + 1);
+      svg.appendChild(el("rect", {
+        class: "band", x: bx0, y: m.t, width: bx1 - bx0, height: ih, rx: 4
+      }));
+    }
+
+    var TICKS = 4;
+    for (var t = 0; t <= TICKS; t++) {
+      var v = (max / TICKS) * t;
+      var gy = y(v);
+      svg.appendChild(el("line", {
+        class: t === 0 ? "baseline" : "gridline", x1: m.l, x2: m.l + iw, y1: gy, y2: gy
+      }));
+      var lab = el("text", { class: "tick", x: m.l - 8, y: gy + 3.5, "text-anchor": "end" });
+      lab.textContent = String(v);
+      svg.appendChild(lab);
+    }
+
+    var ylab = el("text", { class: "axis-label", x: m.l, y: m.t - 8, "text-anchor": "start" });
+    ylab.textContent = opts.yLabel;
+    svg.appendChild(ylab);
+
+    var peak = Math.max.apply(null, items.map(function (d) { return d.v; }));
+
+    items.forEach(function (d, i) {
+      var bx = m.l + slot * i + (slot - bw) / 2;
+      var by = y(d.v);
+      var bh = m.t + ih - by;
+
+      svg.appendChild(el("path", {
+        class: d.dim ? "mark-dim" : "mark", d: barPathV(bx, by, bw, bh, 4)
+      }));
+
+      if (opts.labelEvery && (i % opts.labelEvery === 0)) {
+        var xt = el("text", {
+          class: "tick", x: bx + bw / 2, y: m.t + ih + 16, "text-anchor": "middle"
+        });
+        xt.textContent = d.k;
+        svg.appendChild(xt);
+      }
+
+      if (d.v === peak) {
+        var dl = el("text", {
+          class: "dlabel", x: bx + bw / 2, y: by - 7, "text-anchor": "middle"
+        });
+        dl.textContent = opts.valueFmt ? opts.valueFmt(d.v) : fmt(d.v);
+        svg.appendChild(dl);
+      }
+
+      var hit = el("rect", { class: "hit", x: m.l + slot * i, y: m.t, width: slot, height: ih });
+      hit.addEventListener("mouseenter", function () {
+        var p = toHostPx(host, svg, W, H)(bx + bw / 2, by);
+        tip.show("<strong>" + d.full + "</strong><br>" +
+                 (opts.tipFmt ? opts.tipFmt(d) : fmt(d.v) + " " + opts.unit), p.x, p.y);
+      });
+      hit.addEventListener("mouseleave", tip.hide);
+      svg.appendChild(hit);
+    });
+
+    host.insertBefore(svg, host.firstChild);
+  }
+
+  /* ---------------- horizontal bars ---------------- */
+
+  function hBars(hostId, tipId, items, opts) {
+    var host = document.getElementById(hostId);
+    var tip = mkTip(hostId, tipId);
+
+    var rowH = opts.rowH || 30;
+    var GAP = 2;
+    var W = opts.W || 480;
+    var m = { t: 6, r: 64, b: 6, l: opts.labelW || 118 };
+    var H = m.t + m.b + items.length * rowH;
+    var iw = W - m.l - m.r;
+    var barH = Math.min(rowH - GAP * 2, opts.maxBar || 1e9);
+
+    var max = niceMax(Math.max.apply(null, items.map(function (d) { return d.v; })), 4);
+
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": opts.aria });
+
+    svg.appendChild(el("line", {
+      class: "baseline", x1: m.l, x2: m.l, y1: m.t, y2: m.t + items.length * rowH
+    }));
+
+    items.forEach(function (d, i) {
+      var bh = barH;
+      var by = m.t + rowH * i + (rowH - bh) / 2;
+      var bw = Math.max(1, (iw * d.v) / max);
+
+      svg.appendChild(el("path", {
+        class: d.dim ? "mark-dim" : "mark", d: barPathH(m.l, by, bw, bh, 4)
+      }));
+
+      var kt = el("text", {
+        class: "tick", x: m.l - 9, y: by + bh / 2 + 3.5, "text-anchor": "end"
+      });
+      kt.textContent = d.k;
+      svg.appendChild(kt);
+
+      var vt = el("text", {
+        class: "dlabel", x: m.l + bw + 8, y: by + bh / 2 + 4, "text-anchor": "start"
+      });
+      vt.textContent = opts.valueFmt ? opts.valueFmt(d.v) : fmt(d.v);
+      svg.appendChild(vt);
+
+      var hit = el("rect", { class: "hit", x: 0, y: m.t + rowH * i, width: W, height: rowH });
+      hit.addEventListener("mouseenter", function () {
+        var p = toHostPx(host, svg, W, H)(m.l + bw / 2, by);
+        tip.show("<strong>" + (d.full || d.k) + "</strong><br>" +
+                 (opts.tipFmt ? opts.tipFmt(d) : fmt(d.v) + " " + opts.unit), p.x, p.y);
+      });
+      hit.addEventListener("mouseleave", tip.hide);
+      svg.appendChild(hit);
+    });
+
+    host.insertBefore(svg, host.firstChild);
+  }
+
+  /* ---------------- build ---------------- */
+
+  areaChart("host-impr", "tip-impr", "impr", "Impressions");
+  areaChart("host-clicks", "tip-clicks", "clicks", "Clicks");
+
+  vBars("host-hours", "tip-hours", hours.map(function (v, h) {
+    var h12 = (h % 12 === 0) ? 12 : h % 12;
+    var ap = h < 12 ? "am" : "pm";
+    return {
+      k: h12 + ap, full: h12 + ":00" + ap, v: v,
+      dim: (h < OPEN_FROM || h > OPEN_TO)
+    };
+  }), {
+    W: 980, H: 250, yLabel: "CLICKS", unit: "clicks",
+    labelEvery: 2, maxBar: 24,
+    bandFrom: OPEN_FROM, bandTo: OPEN_TO,
+    aria: "Clicks by hour of day, peaking at 77 clicks at 11am; bars outside 11am to 8pm are greyed"
+  });
+
+  vBars("host-dow", "tip-dow", dow.map(function (d) {
+    return { k: d.k, full: d.closed ? d.k + " (closed)" : d.k, v: d.v, dim: d.closed };
+  }), {
+    W: 480, H: 220, yLabel: "AVG CLICKS / DAY", unit: "clicks per day",
+    labelEvery: 1, maxBar: 26,
+    valueFmt: function (v) { return v.toFixed(1); },
+    tipFmt: function (d) { return d.v.toFixed(1) + " clicks per day"; },
+    aria: "Average clicks per day by day of week, highest on Saturday at 36.3"
+  });
+
+  hBars("host-waste", "tip-waste", waste, {
+    W: 980, rowH: 40, labelW: 148, maxBar: 22,
+    valueFmt: money,
+    tipFmt: function (d) { return money(d.v) + " across " + d.c + " clicks"; },
+    aria: "Spend by search-term group: on-target 29.78 dollars, not on menu 10.73, rival restaurants 8.30, outside area 5.21, own name 5.08"
+  });
+
+  hBars("host-open", "tip-open", openSplit, {
+    rowH: 44, labelW: 106, maxBar: 24,
+    valueFmt: money,
+    tipFmt: function (d) { return money(d.v) + " across " + d.c + " clicks"; },
+    aria: "Spend inside trading hours 75.90 dollars versus 30.50 dollars outside them"
+  });
+
+  /* daily table */
+  var tb = document.querySelector("#daily-table tbody");
+  daily.forEach(function (d) {
+    var tr = document.createElement("tr");
+    var th = document.createElement("th");
+    th.setAttribute("scope", "row");
+    th.textContent = d.d;
+    tr.appendChild(th);
+    [fmt(d.impr), fmt(d.clicks), ((d.clicks / d.impr) * 100).toFixed(2) + "%", money(d.cost)]
+      .forEach(function (v) {
+        var td = document.createElement("td");
+        td.className = "num";
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+    tb.appendChild(tr);
+  });
+
+  var tot = document.createElement("tr");
+  tot.className = "total";
+  var tth = document.createElement("th");
+  tth.setAttribute("scope", "row");
+  tth.textContent = "23 days";
+  tot.appendChild(tth);
+  ["12,295", "599", "4.87%", "$106.39"].forEach(function (v) {
+    var td = document.createElement("td");
+    td.className = "num";
+    td.textContent = v;
+    tot.appendChild(td);
+  });
+  tb.appendChild(tot);
+})();
+</script>
+</body>
+</html>
