@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Bento Moto &mdash; Online Ordering Performance Review</title>
+<style>
+  :root {
+    --navy:#001f52; --heading-navy:#0a2540; --brand-blue:#1B51A4;
+    --accent-blue:#3B82F6; --accent-cyan:#06B6D4;
+    --ink:#0a1628; --ink-body:#3b4563; --ink-muted:#6b7a99; --ink-subtle:#8b95ad;
+    --surface:#fff; --surface-raised:#f8f9fc; --surface-cool:#f0f3fa;
+    --border:#e2e8f0; --border-subtle:#eef2f7;
+    --good:#1d7a44; --good-bg:#e7f4ec; --watch:#9a6207; --watch-bg:#fdf4e3;
+    --font-head:"Lato","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+    --font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface);color:var(--ink-body);
+       font-family:var(--font-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--font-head);color:var(--heading-navy);margin:0;text-wrap:balance}
+
+  /* masthead */
+  .masthead{background:linear-gradient(165deg,#020817 0%,#001131 35%,#001f52 68%,#0c2d6b 100%);
+            padding:54px 0 60px;position:relative;overflow:hidden}
+  .masthead::after{content:"";position:absolute;inset:0;opacity:.04;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);
+    background-size:60px 60px}
+  .orb{position:absolute;width:620px;height:620px;right:-190px;top:-290px;border-radius:50%;
+       background:radial-gradient(circle,rgba(59,130,246,.16) 0%,transparent 70%);filter:blur(60px);pointer-events:none}
+  .inner{max-width:1080px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+  .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#38bdf8;margin:0 0 14px}
+  .masthead h1{color:#fff;font-size:2.9rem;font-weight:900;line-height:1.07;letter-spacing:-.02em;max-width:15ch}
+  .lede{color:#b4c6e0;font-size:1.08rem;line-height:1.6;max-width:62ch;margin:18px 0 0}
+  .meta-strip{display:flex;flex-wrap:wrap;gap:30px;margin-top:32px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+  .meta-item .k{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:#7ba3d4;margin-bottom:4px}
+  .meta-item .v{color:#fff;font-size:14.5px;font-weight:600}
+
+  /* kpi band */
+  .kpi-band{max-width:1080px;margin:-30px auto 0;padding:0 32px;position:relative;z-index:2;
+            display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 20px 18px;
+       box-shadow:0 8px 24px rgba(10,22,40,.08);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+               background:linear-gradient(135deg,#1B51A4,#3B82F6,#06B6D4)}
+  .kpi .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--ink-muted);margin-bottom:8px}
+  .kpi .value{font-family:var(--font-head);font-size:1.95rem;font-weight:800;color:var(--navy);line-height:1.05;letter-spacing:-.02em}
+  .kpi .value .unit{font-size:1.15rem;font-weight:700;vertical-align:.32em;margin-right:1px}
+  .kpi .sub{font-size:12.5px;color:var(--ink-muted);margin-top:7px;line-height:1.45}
+  .up{color:var(--good);font-weight:700}
+  .dn{color:var(--watch);font-weight:700}
+
+  /* sections */
+  section{max-width:1080px;margin:0 auto;padding:52px 32px 0}
+  .sec-head{margin-bottom:22px}
+  .sec-head .eyebrow{color:var(--accent-blue)}
+  .sec-head h2{font-size:1.85rem;font-weight:800;line-height:1.2;letter-spacing:-.015em}
+  .sec-head p{color:var(--ink-muted);max-width:66ch;margin:10px 0 0;font-size:1.02rem}
+
+  .panel{background:linear-gradient(180deg,#fff 0%,#f8f9fc 55%,#fff 100%);
+         border:1px solid var(--border);border-radius:18px;padding:26px 24px 20px;margin-top:6px}
+  .panel.tight{padding:22px 24px 16px}
+  .chart-title{font-family:var(--font-head);font-size:14.5px;font-weight:700;color:var(--heading-navy);margin:0 0 2px}
+  .chart-note{font-size:12.5px;color:var(--ink-muted);margin:0 0 14px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .ax{font-size:11px;fill:var(--ink-subtle);font-family:var(--font-data)}
+  .val{font-size:10.5px;fill:var(--ink-muted);font-family:var(--font-data);
+       paint-order:stroke;stroke:#fbfcfe;stroke-width:3.5px;stroke-linejoin:round}
+  .val.strong{fill:var(--navy);font-weight:700}
+  .mon{font-size:11px;fill:var(--ink-muted)}
+  .era{font-size:11px;fill:var(--ink-subtle);font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+  .era.strong{fill:var(--brand-blue)}
+  .grp{font-size:13px;fill:var(--heading-navy);font-weight:700}
+  .grp .up{fill:var(--good)}
+  .annot{font-size:11px;fill:var(--heading-navy);font-weight:600}
+
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin:14px 0 2px;font-size:12.5px;color:var(--ink-body)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .dash{width:20px;border-top:2px dashed #0a2540;opacity:.6;display:inline-block}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+     color:var(--ink-muted);padding:0 12px 9px;border-bottom:1px solid var(--border)}
+  td{padding:9px 12px;border-bottom:1px solid var(--border-subtle);color:var(--ink-body)}
+  td.n{font-family:var(--font-data);text-align:right;color:var(--ink);white-space:nowrap}
+  td.t{color:var(--ink-muted);font-size:13px}
+  tr.hl td{background:#f2f6fd;font-weight:600;color:var(--navy)}
+  tr.tot td{border-top:1.5px solid var(--border);border-bottom:none;font-weight:700;color:var(--navy)}
+  .table-wrap{overflow-x:auto;margin-top:4px}
+  details{margin-top:14px}
+  summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--brand-blue);padding:6px 0}
+  summary:hover{color:var(--accent-blue)}
+
+  .note{border-left:3px solid var(--accent-blue);background:var(--surface-cool);
+        border-radius:0 12px 12px 0;padding:16px 20px;margin-top:18px;font-size:14.5px;color:var(--ink-body)}
+  .note.watch{border-left-color:#d9a441;background:var(--watch-bg)}
+  .note.good{border-left-color:var(--good);background:var(--good-bg)}
+  .note b{color:var(--heading-navy)}
+  .note .h{display:block;font-family:var(--font-head);font-weight:800;color:var(--heading-navy);
+           font-size:15px;margin-bottom:5px}
+
+  footer{max-width:1080px;margin:56px auto 0;padding:24px 32px 52px;border-top:1px solid var(--border);
+         color:var(--ink-subtle);font-size:12.5px}
+  footer b{color:var(--navy)}
+
+  @media (max-width:900px){
+    .kpi-band{grid-template-columns:repeat(2,1fr)}
+    .two{grid-template-columns:1fr}
+    .masthead h1{font-size:2.2rem}
+  }
+  @media (max-width:560px){
+    .masthead{padding:40px 0 52px}
+    .inner{padding:0 20px}
+    section{padding:40px 20px 0}
+    .kpi-band{grid-template-columns:1fr;padding:0 20px}
+    .masthead h1{font-size:1.9rem}
+    footer{padding:24px 20px 40px}
+  }
+  @media print{
+    body{font-size:12.5px}
+    .masthead{padding:30px 0 34px}
+    .masthead h1{font-size:2rem}
+    .kpi-band{margin-top:-22px;gap:10px}
+    .kpi{box-shadow:none}
+    section{padding:26px 24px 0;break-inside:avoid}
+    .panel{break-inside:avoid}
+    details{display:none}
+    .orb{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="orb"></div>
+  <div class="inner">
+    <p class="eyebrow">Chowly &middot; Platform Performance Review</p>
+    <h1>Your online ordering, before and after Chowly</h1>
+    <p class="lede">Bento Moto moved off the Lightspeed U-Series online ordering system and onto Chowly
+      Online Ordering on <b style="color:#fff">June&nbsp;29, 2026</b>. July and August were the first two
+      full months on the new system. Here is how they compare to the same months a year ago, and to the
+      twelve months before the switch.</p>
+    <div class="meta-strip">
+      <div class="meta-item"><span class="k">Prepared for</span><span class="v">Bento Moto &middot; Oakdale, MN</span></div>
+      <div class="meta-item"><span class="k">Reporting period</span><span class="v">Jun 2025 &ndash; Sep 13, 2026</span></div>
+      <div class="meta-item"><span class="k">Report date</span><span class="v">September 14, 2026</span></div>
+      <div class="meta-item"><span class="k">Prepared by</span><span class="v">Jesse Gorin, Customer Success</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="kpi-band">
+  <div class="kpi">
+    <div class="label">Direct online sales</div>
+    <div class="value"><span class="unit">$</span>7,893</div>
+    <div class="sub">July + August combined &middot; <span class="up">+25.8%</span> vs the same two months last year</div>
+  </div>
+  <div class="kpi">
+    <div class="label">vs. your 12-month average</div>
+    <div class="value up" style="color:#1d7a44">+40.6%</div>
+    <div class="sub">Against $2,808/mo on the old system</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Orders through Chowly</div>
+    <div class="value">695</div>
+    <div class="sub">All channels since May 18 &middot; $24,973 in sales</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Average online order</div>
+    <div class="value"><span class="unit">$</span>37.41</div>
+    <div class="sub">211 direct orders across July and August</div>
+  </div>
+</div>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">The channel we replaced</p>
+    <h2>Every month of direct online ordering, side by side</h2>
+    <p>Each bar is one month of net sales through your own online ordering &mdash; the twelve months on
+      Lightspeed U-Series, then the first two full months on Chowly. Same channel, same restaurant,
+      same menu. Both Chowly months came in above your best month on the old system ($3,542 in January).</p>
+  </div>
+  <div class="panel">
+    <p class="chart-title">Direct online ordering &mdash; net sales by month</p>
+    <p class="chart-note">Net sales exclude tax. June 2026 is omitted: the old system was retired mid-month
+      and Chowly went live on the 29th, so neither figure represents a full month.</p>
+    <svg viewBox="0 0 880 330" role="img" aria-label="Monthly first-party online ordering net sales, June 2025 through August 2026">
+<line x1="66" y1="258.0" x2="862" y2="258.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="262.0" text-anchor="end" class="ax">$0</text>
+<line x1="66" y1="198.0" x2="862" y2="198.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="202.0" text-anchor="end" class="ax">$1k</text>
+<line x1="66" y1="138.0" x2="862" y2="138.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="142.0" text-anchor="end" class="ax">$2k</text>
+<line x1="66" y1="78.0" x2="862" y2="78.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="82.0" text-anchor="end" class="ax">$3k</text>
+<line x1="66" y1="18.0" x2="862" y2="18.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="22.0" text-anchor="end" class="ax">$4k</text>
+<line x1="67.0" y1="89.5" x2="724.0" y2="89.5" stroke="#0a2540" stroke-width="1.5" stroke-dasharray="5 4" opacity=".55"/>
+<line x1="734.0" y1="16" x2="734.0" y2="258" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M81.0 258 L81.0 109.7 Q81.0 105.7 85.0 105.7 L121.0 105.7 Q125.0 105.7 125.0 109.7 L125.0 258 Z" fill="#06B6D4"/>
+<text x="103.0" y="97.7" text-anchor="middle" class="val">$2,538</text>
+<text x="103.0" y="276" text-anchor="middle" class="mon">Jun</text>
+<path d="M135.0 258 L135.0 87.7 Q135.0 83.7 139.0 83.7 L175.0 83.7 Q179.0 83.7 179.0 87.7 L179.0 258 Z" fill="#06B6D4"/>
+<text x="157.0" y="75.7" text-anchor="middle" class="val">$2,905</text>
+<text x="157.0" y="276" text-anchor="middle" class="mon">Jul</text>
+<path d="M189.0 258 L189.0 59.8 Q189.0 55.8 193.0 55.8 L229.0 55.8 Q233.0 55.8 233.0 59.8 L233.0 258 Z" fill="#06B6D4"/>
+<text x="211.0" y="47.8" text-anchor="middle" class="val">$3,370</text>
+<text x="211.0" y="276" text-anchor="middle" class="mon">Aug</text>
+<path d="M243.0 258 L243.0 109.1 Q243.0 105.1 247.0 105.1 L283.0 105.1 Q287.0 105.1 287.0 109.1 L287.0 258 Z" fill="#06B6D4"/>
+<text x="265.0" y="97.1" text-anchor="middle" class="val">$2,548</text>
+<text x="265.0" y="276" text-anchor="middle" class="mon">Sep</text>
+<path d="M297.0 258 L297.0 107.8 Q297.0 103.8 301.0 103.8 L337.0 103.8 Q341.0 103.8 341.0 107.8 L341.0 258 Z" fill="#06B6D4"/>
+<text x="319.0" y="95.8" text-anchor="middle" class="val">$2,570</text>
+<text x="319.0" y="276" text-anchor="middle" class="mon">Oct</text>
+<path d="M351.0 258 L351.0 122.3 Q351.0 118.3 355.0 118.3 L391.0 118.3 Q395.0 118.3 395.0 122.3 L395.0 258 Z" fill="#06B6D4"/>
+<text x="373.0" y="110.3" text-anchor="middle" class="val">$2,329</text>
+<text x="373.0" y="276" text-anchor="middle" class="mon">Nov</text>
+<path d="M405.0 258 L405.0 79.1 Q405.0 75.1 409.0 75.1 L445.0 75.1 Q449.0 75.1 449.0 79.1 L449.0 258 Z" fill="#06B6D4"/>
+<text x="427.0" y="67.1" text-anchor="middle" class="val">$3,048</text>
+<text x="427.0" y="276" text-anchor="middle" class="mon">Dec</text>
+<path d="M459.0 258 L459.0 49.5 Q459.0 45.5 463.0 45.5 L499.0 45.5 Q503.0 45.5 503.0 49.5 L503.0 258 Z" fill="#06B6D4"/>
+<text x="481.0" y="37.5" text-anchor="middle" class="val">$3,542</text>
+<text x="481.0" y="276" text-anchor="middle" class="mon">Jan</text>
+<path d="M513.0 258 L513.0 108.4 Q513.0 104.4 517.0 104.4 L553.0 104.4 Q557.0 104.4 557.0 108.4 L557.0 258 Z" fill="#06B6D4"/>
+<text x="535.0" y="96.4" text-anchor="middle" class="val">$2,559</text>
+<text x="535.0" y="276" text-anchor="middle" class="mon">Feb</text>
+<path d="M567.0 258 L567.0 109.9 Q567.0 105.9 571.0 105.9 L607.0 105.9 Q611.0 105.9 611.0 109.9 L611.0 258 Z" fill="#06B6D4"/>
+<text x="589.0" y="97.9" text-anchor="middle" class="val">$2,535</text>
+<text x="589.0" y="276" text-anchor="middle" class="mon">Mar</text>
+<path d="M621.0 258 L621.0 95.5 Q621.0 91.5 625.0 91.5 L661.0 91.5 Q665.0 91.5 665.0 95.5 L665.0 258 Z" fill="#06B6D4"/>
+<text x="643.0" y="83.5" text-anchor="middle" class="val">$2,774</text>
+<text x="643.0" y="276" text-anchor="middle" class="mon">Apr</text>
+<path d="M675.0 258 L675.0 83.6 Q675.0 79.6 679.0 79.6 L715.0 79.6 Q719.0 79.6 719.0 83.6 L719.0 258 Z" fill="#06B6D4"/>
+<text x="697.0" y="71.6" text-anchor="middle" class="val">$2,974</text>
+<text x="697.0" y="276" text-anchor="middle" class="mon">May</text>
+<path d="M749.0 258 L749.0 25.4 Q749.0 21.4 753.0 21.4 L789.0 21.4 Q793.0 21.4 793.0 25.4 L793.0 258 Z" fill="#1B51A4"/>
+<text x="771.0" y="13.4" text-anchor="middle" class="val strong">$3,943</text>
+<text x="771.0" y="276" text-anchor="middle" class="mon">Jul</text>
+<path d="M803.0 258 L803.0 25.0 Q803.0 21.0 807.0 21.0 L843.0 21.0 Q847.0 21.0 847.0 25.0 L847.0 258 Z" fill="#1B51A4"/>
+<text x="825.0" y="13.0" text-anchor="middle" class="val strong">$3,950</text>
+<text x="825.0" y="276" text-anchor="middle" class="mon">Aug</text>
+<line x1="66" y1="258" x2="862" y2="258" stroke="#94a3b8" stroke-width="1"/>
+<text x="400.0" y="296" text-anchor="middle" class="era">2025 &#8212; 2026 &#183; previous online ordering</text>
+<text x="798.0" y="296" text-anchor="middle" class="era strong">on Chowly</text>
+</svg>
+    <div class="legend">
+      <span><i class="dot" style="background:#06B6D4"></i> Previous online ordering (U-Series)</span>
+      <span><i class="dot" style="background:#1B51A4"></i> Chowly Online Ordering</span>
+      <span><i class="dash"></i> 12-month average on the old system, $2,808</span>
+    </div>
+    <details>
+      <summary>Show the underlying numbers</summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Month</th><th style="text-align:right">Net sales</th><th>System</th></tr></thead>
+          <tbody><tr><td>Jun 2025</td><td class="n">$2,537.55</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Jul 2025</td><td class="n">$2,904.83</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Aug 2025</td><td class="n">$3,370.30</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Sep 2025</td><td class="n">$2,547.53</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Oct 2025</td><td class="n">$2,570.19</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Nov 2025</td><td class="n">$2,328.54</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Dec 2025</td><td class="n">$3,047.77</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Jan 2026</td><td class="n">$3,542.38</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Feb 2026</td><td class="n">$2,559.19</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Mar 2026</td><td class="n">$2,535.49</td><td class="t">Previous online ordering</td></tr>
+<tr><td>Apr 2026</td><td class="n">$2,774.39</td><td class="t">Previous online ordering</td></tr>
+<tr><td>May 2026</td><td class="n">$2,973.76</td><td class="t">Previous online ordering</td></tr>
+<tr class="hl"><td>Jul 2026</td><td class="n">$3,943.38</td><td class="t">Chowly Online Ordering</td></tr>
+<tr class="hl"><td>Aug 2026</td><td class="n">$3,949.88</td><td class="t">Chowly Online Ordering</td></tr></tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Like for like</p>
+    <h2>Same months, one year apart</h2>
+    <p>Comparing July to July and August to August removes the seasonal swing, which matters for a
+      restaurant whose quietest month (November) and busiest (January) differ by half again as much.</p>
+  </div>
+  <div class="two">
+    <div class="panel tight">
+      <p class="chart-title">July and August &mdash; 2025 vs 2026</p>
+      <p class="chart-note">Direct online ordering net sales.</p>
+      <svg viewBox="0 0 560 290" role="img" aria-label="July and August net sales, 2025 versus 2026">
+<line x1="64" y1="226.0" x2="542" y2="226.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="52" y="230.0" text-anchor="end" class="ax">$0</text>
+<line x1="64" y1="173.5" x2="542" y2="173.5" stroke="#e8edf6" stroke-width="1"/>
+<text x="52" y="177.5" text-anchor="end" class="ax">$1k</text>
+<line x1="64" y1="121.0" x2="542" y2="121.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="52" y="125.0" text-anchor="end" class="ax">$2k</text>
+<line x1="64" y1="68.5" x2="542" y2="68.5" stroke="#e8edf6" stroke-width="1"/>
+<text x="52" y="72.5" text-anchor="end" class="ax">$3k</text>
+<line x1="64" y1="16.0" x2="542" y2="16.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" class="ax">$4k</text>
+<path d="M106.5 226 L106.5 77.5 Q106.5 73.5 110.5 73.5 L176.5 73.5 Q180.5 73.5 180.5 77.5 L180.5 226 Z" fill="#06B6D4"/>
+<text x="143.5" y="64.5" text-anchor="middle" class="val">$2,905</text>
+<text x="143.5" y="244" text-anchor="middle" class="mon">2025</text>
+<path d="M186.5 226 L186.5 23.0 Q186.5 19.0 190.5 19.0 L256.5 19.0 Q260.5 19.0 260.5 23.0 L260.5 226 Z" fill="#1B51A4"/>
+<text x="223.5" y="10.0" text-anchor="middle" class="val strong">$3,943</text>
+<text x="223.5" y="244" text-anchor="middle" class="mon">2026</text>
+<text x="183.5" y="268" text-anchor="middle" class="grp">July <tspan class="up">+35.8%</tspan></text>
+<path d="M345.5 226 L345.5 53.1 Q345.5 49.1 349.5 49.1 L415.5 49.1 Q419.5 49.1 419.5 53.1 L419.5 226 Z" fill="#06B6D4"/>
+<text x="382.5" y="40.1" text-anchor="middle" class="val">$3,370</text>
+<text x="382.5" y="244" text-anchor="middle" class="mon">2025</text>
+<path d="M425.5 226 L425.5 22.6 Q425.5 18.6 429.5 18.6 L495.5 18.6 Q499.5 18.6 499.5 22.6 L499.5 226 Z" fill="#1B51A4"/>
+<text x="462.5" y="9.6" text-anchor="middle" class="val strong">$3,950</text>
+<text x="462.5" y="244" text-anchor="middle" class="mon">2026</text>
+<text x="422.5" y="268" text-anchor="middle" class="grp">August <tspan class="up">+17.2%</tspan></text>
+<line x1="64" y1="226" x2="542" y2="226" stroke="#94a3b8" stroke-width="1"/>
+</svg>
+      <div class="legend">
+        <span><i class="dot" style="background:#06B6D4"></i> 2025, previous system</span>
+        <span><i class="dot" style="background:#1B51A4"></i> 2026, Chowly</span>
+      </div>
+    </div>
+    <div>
+      <div class="note good">
+        <span class="h">July: +35.8%</span>
+        $2,904.83 &rarr; $3,943.38. Your strongest single improvement, and the first full month on
+        the new checkout.
+      </div>
+      <div class="note good">
+        <span class="h">August: +17.2%</span>
+        $3,370.30 &rarr; $3,949.88. August 2025 was already a strong month, so the gain is measured
+        against a higher bar.
+      </div>
+      <div class="note">
+        <span class="h">Two months together: +25.8%</span>
+        $6,275.13 in 2025 against $7,893.26 in 2026 &mdash; <b>$1,618.13 more</b> in direct online
+        sales across the same two months, with none of it shared with a marketplace.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">The full picture</p>
+    <h2>Everything Chowly now sends to your kitchen</h2>
+    <p>Beyond your own online ordering, Chowly has been passing your DoorDash, Uber Eats and Grubhub
+      orders straight into Lightspeed since May 18 &mdash; no tablets, no re-keying. This is the combined
+      July and August volume.</p>
+  </div>
+  <div class="panel tight">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Channel</th><th style="text-align:right">Orders</th><th style="text-align:right">Net sales</th><th style="text-align:right">Share</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td>Chowly Online Ordering (direct)</td><td class="n">211</td><td class="n">$7,893.26</td><td class="n">49.3%</td></tr>
+          <tr><td>DoorDash</td><td class="n">163</td><td class="n">$5,710.01</td><td class="n">35.7%</td></tr>
+          <tr><td>Uber Eats</td><td class="n">66</td><td class="n">$2,005.59</td><td class="n">12.5%</td></tr>
+          <tr><td>Grubhub</td><td class="n">10</td><td class="n">$403.82</td><td class="n">2.5%</td></tr>
+          <tr class="tot"><td>Total, July + August</td><td class="n">450</td><td class="n">$16,012.68</td><td class="n">100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <span class="h">Nearly half your online volume is now first-party</span>
+      Direct orders carry no marketplace commission and bring the guest's name and email with them,
+      which is what feeds the email campaigns and the loyalty program.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">What to watch</p>
+    <h2>September has slowed, and there is a straightforward reason</h2>
+  </div>
+  <div class="note watch">
+    <span class="h">Direct orders are running 24% below August</span>
+    Through September 13 you are averaging <b>$96.93 a day</b> in direct online sales, against
+    <b>$127.42</b> in August. That is still <b>14% ahead of September last year</b>, so the year-over-year
+    gain holds &mdash; but the month-to-month drop is real and worth acting on.
+  </div>
+  <div class="note">
+    <span class="h">The Google Search Ads campaign has been paused since August 4</span>
+    It was paused at your request while we reviewed performance. On August 11 we applied five fixes
+    inside the account: ads now point directly at your ordering page instead of the homepage, twenty
+    negative keywords were added, the schedule was tightened to your trading hours, the display network
+    was switched off, and targeting was narrowed to people physically nearby. <b>All five are live and
+    waiting.</b> Un-pausing the campaign is the only remaining step &mdash; say the word and we will turn it
+    back on.
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Method</p>
+    <h2>What these numbers cover</h2>
+  </div>
+  <div class="panel tight">
+    <p style="margin-top:0;font-size:14.5px">
+      <b style="color:var(--heading-navy)">Where the figures come from.</b> The 2025 and early-2026 months
+      are from your own Lightspeed U-Series order report, covering June 2025 through June 15, 2026.
+      The Chowly months are from Chowly's order records. All figures are <b>net sales</b> &mdash; food and
+      beverage before tax, and before delivery fees and tips.
+    </p>
+    <p style="font-size:14.5px">
+      <b style="color:var(--heading-navy)">What this does not measure.</b> This report covers online
+      ordering only. It does not include dine-in or counter sales, so it is not a picture of total
+      restaurant revenue. Your Lightspeed sales reports through June are on file; <b>sending us the July
+      and August reports</b> would let us show the online gain alongside the whole-restaurant number in
+      the next review.
+    </p>
+    <p style="font-size:14.5px;margin-bottom:6px">
+      <b style="color:var(--heading-navy)">Partial months.</b> June 2026 is excluded from the comparison
+      &mdash; the old system was retired mid-month and Chowly went live on the 29th. September is reported
+      as a daily average through the 13th rather than a monthly total.
+    </p>
+  </div>
+</section>
+
+<footer>
+  Prepared by <b>Chowly</b> for Bento Moto &middot; September 14, 2026 &middot; Questions? Reply to Jesse Gorin
+  or raise it on our monthly sync. &nbsp;chowly.com
+</footer>
+
+</body>
+</html>
