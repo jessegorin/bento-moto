@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Bento Moto &mdash; Online Ordering Performance Review</title>
+<title>Bento Moto Platform Performance Review</title>
 <style>
   :root {
     --navy:#001f52; --heading-navy:#0a2540; --brand-blue:#1B51A4;
@@ -105,6 +105,21 @@
   .note .h{display:block;font-family:var(--font-head);font-weight:800;color:var(--heading-navy);
            font-size:15px;margin-bottom:5px}
 
+  /* product grid */
+  .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+  .prod{border:1px solid var(--border);border-radius:14px;padding:15px 16px 14px;background:#fff}
+  .prod .tag{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;
+             letter-spacing:1px;padding:3px 9px;border-radius:20px;margin-bottom:9px}
+  .prod.live .tag{background:var(--good-bg);color:var(--good)}
+  .prod.ready .tag{background:#eaf1fd;color:var(--brand-blue)}
+  .prod.paused .tag{background:var(--watch-bg);color:var(--watch)}
+  .prod .name{display:block;font-family:var(--font-head);font-weight:800;color:var(--heading-navy);
+              font-size:14.5px;line-height:1.25;margin-bottom:5px}
+  .prod .desc{display:block;font-size:12.5px;color:var(--ink-muted);line-height:1.5}
+  .grid-label{font-family:var(--font-head);font-size:13px;font-weight:800;color:var(--heading-navy);
+              text-transform:uppercase;letter-spacing:.8px;margin:26px 0 12px}
+  .grid-label:first-child{margin-top:0}
+
   footer{max-width:1080px;margin:56px auto 0;padding:24px 32px 52px;border-top:1px solid var(--border);
          color:var(--ink-subtle);font-size:12.5px}
   footer b{color:var(--navy)}
@@ -112,6 +127,7 @@
   @media (max-width:900px){
     .kpi-band{grid-template-columns:repeat(2,1fr)}
     .two{grid-template-columns:1fr}
+    .prod-grid{grid-template-columns:repeat(2,1fr)}
     .masthead h1{font-size:2.2rem}
   }
   @media (max-width:560px){
@@ -119,6 +135,7 @@
     .inner{padding:0 20px}
     section{padding:40px 20px 0}
     .kpi-band{grid-template-columns:1fr;padding:0 20px}
+    .prod-grid{grid-template-columns:1fr}
     .masthead h1{font-size:1.9rem}
     footer{padding:24px 20px 40px}
   }
@@ -130,6 +147,7 @@
     .kpi{box-shadow:none}
     section{padding:26px 24px 0;break-inside:avoid}
     .panel{break-inside:avoid}
+    .prod{break-inside:avoid}
     details{display:none}
     .orb{display:none}
   }
@@ -142,14 +160,14 @@
   <div class="inner">
     <p class="eyebrow">Chowly &middot; Platform Performance Review</p>
     <h1>Your online ordering, before and after Chowly</h1>
-    <p class="lede">Bento Moto moved off the Lightspeed U-Series online ordering system and onto Chowly
-      Online Ordering on <b style="color:#fff">June&nbsp;29, 2026</b>. July and August were the first two
-      full months on the new system. Here is how they compare to the same months a year ago, and to the
-      twelve months before the switch.</p>
+    <p class="lede">Bento Moto moved off Lightspeed U-Series onto Chowly Online Ordering on
+      <b style="color:#fff">June&nbsp;29, 2026</b>. July and August were the first two full months on the
+      new system. Here is how they compare to the same months last year, and to the twelve months
+      before the switch.</p>
     <div class="meta-strip">
       <div class="meta-item"><span class="k">Prepared for</span><span class="v">Bento Moto &middot; Oakdale, MN</span></div>
       <div class="meta-item"><span class="k">Reporting period</span><span class="v">Jun 2025 &ndash; Sep 13, 2026</span></div>
-      <div class="meta-item"><span class="k">Report date</span><span class="v">September 14, 2026</span></div>
+      <div class="meta-item"><span class="k">Report date</span><span class="v">September 15, 2026</span></div>
       <div class="meta-item"><span class="k">Prepared by</span><span class="v">Jesse Gorin, Customer Success</span></div>
     </div>
   </div>
@@ -182,14 +200,14 @@
   <div class="sec-head">
     <p class="eyebrow">The channel we replaced</p>
     <h2>Every month of direct online ordering, side by side</h2>
-    <p>Each bar is one month of net sales through your own online ordering &mdash; the twelve months on
+    <p>Each bar is one month of net sales through your own online ordering: twelve months on
       Lightspeed U-Series, then the first two full months on Chowly. Same channel, same restaurant,
-      same menu. Both Chowly months came in above your best month on the old system ($3,542 in January).</p>
+      same menu. Both Chowly months beat your best month on the old system ($3,542 in January).</p>
   </div>
   <div class="panel">
-    <p class="chart-title">Direct online ordering &mdash; net sales by month</p>
-    <p class="chart-note">Net sales exclude tax. June 2026 is omitted: the old system was retired mid-month
-      and Chowly went live on the 29th, so neither figure represents a full month.</p>
+    <p class="chart-title">Direct online ordering, net sales by month</p>
+    <p class="chart-note">Net sales exclude tax. June 2026 is omitted because the old system was retired
+      mid-month and Chowly went live on the 29th, so neither figure covers a full month.</p>
     <svg viewBox="0 0 880 330" role="img" aria-label="Monthly first-party online ordering net sales, June 2025 through August 2026">
 <line x1="66" y1="258.0" x2="862" y2="258.0" stroke="#e8edf6" stroke-width="1"/>
 <text x="54" y="262.0" text-anchor="end" class="ax">$0</text>
@@ -284,11 +302,13 @@
     <p class="eyebrow">Like for like</p>
     <h2>Same months, one year apart</h2>
     <p>Comparing July to July and August to August removes the seasonal swing, which matters for a
-      restaurant whose quietest month (November) and busiest (January) differ by half again as much.</p>
+      restaurant whose quietest month (November) and busiest (January) differ by half again as much.
+      Together the two months brought in <b style="color:var(--heading-navy)">$1,618 more</b> in direct
+      online sales than the same two months last year.</p>
   </div>
-  <div class="two">
-    <div class="panel tight">
-      <p class="chart-title">July and August &mdash; 2025 vs 2026</p>
+  <div>
+    <div class="panel tight" style="max-width:700px;margin-left:auto;margin-right:auto">
+      <p class="chart-title">July and August, 2025 vs 2026</p>
       <p class="chart-note">Direct online ordering net sales.</p>
       <svg viewBox="0 0 560 290" role="img" aria-label="July and August net sales, 2025 versus 2026">
 <line x1="64" y1="226.0" x2="542" y2="226.0" stroke="#e8edf6" stroke-width="1"/>
@@ -322,35 +342,85 @@
         <span><i class="dot" style="background:#1B51A4"></i> 2026, Chowly</span>
       </div>
     </div>
-    <div>
-      <div class="note good">
-        <span class="h">July: +35.8%</span>
-        $2,904.83 &rarr; $3,943.38. Your strongest single improvement, and the first full month on
-        the new checkout.
-      </div>
-      <div class="note good">
-        <span class="h">August: +17.2%</span>
-        $3,370.30 &rarr; $3,949.88. August 2025 was already a strong month, so the gain is measured
-        against a higher bar.
-      </div>
-      <div class="note">
-        <span class="h">Two months together: +25.8%</span>
-        $6,275.13 in 2025 against $7,893.26 in 2026 &mdash; <b>$1,618.13 more</b> in direct online
-        sales across the same two months, with none of it shared with a marketplace.
-      </div>
-    </div>
   </div>
 </section>
 
 <section>
   <div class="sec-head">
     <p class="eyebrow">The full picture</p>
-    <h2>Everything Chowly now sends to your kitchen</h2>
-    <p>Beyond your own online ordering, Chowly has been passing your DoorDash, Uber Eats and Grubhub
-      orders straight into Lightspeed since May 18 &mdash; no tablets, no re-keying. This is the combined
-      July and August volume.</p>
+    <h2>Everything Chowly is running for you</h2>
+    <p>Your own ordering page is one piece of it. Here is the full set of products live on your account
+      today, and the ones already included that you have not switched on yet.</p>
   </div>
   <div class="panel tight">
+    <p class="grid-label">Live today</p>
+    <div class="prod-grid">
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Chowly Online Ordering</span>
+        <span class="desc">Your own ordering page and checkout. 211 orders and $7,893 in July and August,
+          with no commission paid to a marketplace.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Lightspeed POS integration</span>
+        <span class="desc">Every order below drops straight into Breadcrumb. No tablets on the counter
+          and nothing re-keyed by hand.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">DoorDash integration</span>
+        <span class="desc">163 orders in July and August, injected into your POS automatically.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Uber Eats integration</span>
+        <span class="desc">66 orders in July and August, injected into your POS automatically.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Grubhub integration</span>
+        <span class="desc">10 orders in July and August, injected into your POS automatically.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Delivery dispatch</span>
+        <span class="desc">Drivers are dispatched for delivery orders placed on your own page, so you
+          can offer delivery without handing the order to a marketplace.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Promotions</span>
+        <span class="desc">Discount codes you can run on your own ordering page whenever you want to
+          drive a slow day.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Guest surveys</span>
+        <span class="desc">Diners are asked for feedback after ordering, and the responses come back
+          to you rather than sitting on a marketplace app.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Revenue recovery</span>
+        <span class="desc">We audit your marketplace payouts and chase back orders that were cancelled,
+          refunded or charged incorrectly.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Google Business Profile</span>
+        <span class="desc">Your Google listing is linked to the ads account so paid traffic points at
+          the right location.</span></div>
+      <div class="prod paused"><span class="tag">Paused</span>
+        <span class="name">Google Search Ads</span>
+        <span class="desc">Your ads account is built and tuned. Paused at your request since August 4.
+          See the section below.</span></div>
+    </div>
+
+    <p class="grid-label">Included, not switched on yet</p>
+    <div class="prod-grid">
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Email marketing</span>
+        <span class="desc">Your email account is set up and unused. Every direct order already captures
+          a guest name and email, so the list is building whether you send to it or not.</span></div>
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Website builder</span>
+        <span class="desc">A site build is included on your account and has not been started.</span></div>
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Loyalty</span>
+        <span class="desc">Available on your ordering page and not yet configured. It gives repeat
+          diners a reason to order direct instead of through an app.</span></div>
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Dynamic Pricing</span>
+        <span class="desc">You opted out at onboarding. It lifts your marketplace menu prices to offset
+          the commission those platforms charge, and is worth another look.</span></div>
+    </div>
+  </div>
+
+  <div class="panel tight" style="margin-top:20px">
+    <p class="chart-title">Order volume by channel, July and August combined</p>
+    <p class="chart-note">Every one of these orders reached your kitchen through Chowly.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Channel</th><th style="text-align:right">Orders</th><th style="text-align:right">Net sales</th><th style="text-align:right">Share</th></tr></thead>
@@ -365,8 +435,8 @@
     </div>
     <div class="note">
       <span class="h">Nearly half your online volume is now first-party</span>
-      Direct orders carry no marketplace commission and bring the guest's name and email with them,
-      which is what feeds the email campaigns and the loyalty program.
+      Direct orders carry no marketplace commission and bring the guest's name and email with them.
+      That is what would feed the email marketing and loyalty tools listed above.
     </div>
   </div>
 </section>
@@ -380,16 +450,15 @@
     <span class="h">Direct orders are running 24% below August</span>
     Through September 13 you are averaging <b>$96.93 a day</b> in direct online sales, against
     <b>$127.42</b> in August. That is still <b>14% ahead of September last year</b>, so the year-over-year
-    gain holds &mdash; but the month-to-month drop is real and worth acting on.
+    gain holds, but the month-to-month drop is real and worth acting on.
   </div>
   <div class="note">
-    <span class="h">The Google Search Ads campaign has been paused since August 4</span>
-    It was paused at your request while we reviewed performance. On August 11 we applied five fixes
-    inside the account: ads now point directly at your ordering page instead of the homepage, twenty
-    negative keywords were added, the schedule was tightened to your trading hours, the display network
-    was switched off, and targeting was narrowed to people physically nearby. <b>All five are live and
-    waiting.</b> Un-pausing the campaign is the only remaining step &mdash; say the word and we will turn it
-    back on.
+    <span class="h">Your ads have been switched off since August 4</span>
+    They were paused at your request while we reviewed performance. On August 11 we applied five fixes
+    inside the account: ads now point at your ordering page instead of your homepage, twenty negative
+    keywords were added, the schedule was tightened to your trading hours, the display network was
+    switched off, and targeting was narrowed to people physically nearby. <b>All five are live and
+    waiting.</b> Turning the campaign back on is the only step left, and it costs nothing extra to do.
   </div>
 </section>
 
@@ -402,7 +471,7 @@
     <p style="margin-top:0;font-size:14.5px">
       <b style="color:var(--heading-navy)">Where the figures come from.</b> The 2025 and early-2026 months
       are from your own Lightspeed U-Series order report, covering June 2025 through June 15, 2026.
-      The Chowly months are from Chowly's order records. All figures are <b>net sales</b> &mdash; food and
+      The Chowly months are from Chowly's order records. All figures are <b>net sales</b>: food and
       beverage before tax, and before delivery fees and tips.
     </p>
     <p style="font-size:14.5px">
@@ -414,14 +483,14 @@
     </p>
     <p style="font-size:14.5px;margin-bottom:6px">
       <b style="color:var(--heading-navy)">Partial months.</b> June 2026 is excluded from the comparison
-      &mdash; the old system was retired mid-month and Chowly went live on the 29th. September is reported
-      as a daily average through the 13th rather than a monthly total.
+      because the old system was retired mid-month and Chowly went live on the 29th. September is
+      reported as a daily average through the 13th rather than a monthly total.
     </p>
   </div>
 </section>
 
 <footer>
-  Prepared by <b>Chowly</b> for Bento Moto &middot; September 14, 2026 &middot; Questions? Reply to Jesse Gorin
+  Prepared by <b>Chowly</b> for Bento Moto &middot; September 15, 2026 &middot; Questions? Reply to Jesse Gorin
   or raise it on our monthly sync. &nbsp;chowly.com
 </footer>
 
