@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Bento Moto Fall Sales Review</title>
+<style>
+  :root {
+    --navy:#001f52; --heading-navy:#0a2540; --brand-blue:#1B51A4;
+    --accent-blue:#3B82F6; --accent-cyan:#06B6D4;
+    --ink:#0a1628; --ink-body:#3b4563; --ink-muted:#6b7a99; --ink-subtle:#8b95ad;
+    --surface:#fff; --surface-raised:#f8f9fc; --surface-cool:#f0f3fa;
+    --border:#e2e8f0; --border-subtle:#eef2f7;
+    --good:#1d7a44; --good-bg:#e7f4ec; --watch:#9a6207; --watch-bg:#fdf4e3;
+    --font-head:"Lato","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+    --font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface);color:var(--ink-body);
+       font-family:var(--font-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--font-head);color:var(--heading-navy);margin:0;text-wrap:balance}
+
+  /* masthead */
+  .masthead{background:linear-gradient(165deg,#020817 0%,#001131 35%,#001f52 68%,#0c2d6b 100%);
+            padding:54px 0 60px;position:relative;overflow:hidden}
+  .masthead::after{content:"";position:absolute;inset:0;opacity:.04;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);
+    background-size:60px 60px}
+  .orb{position:absolute;width:620px;height:620px;right:-190px;top:-290px;border-radius:50%;
+       background:radial-gradient(circle,rgba(59,130,246,.16) 0%,transparent 70%);filter:blur(60px);pointer-events:none}
+  .inner{max-width:1080px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+  .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#38bdf8;margin:0 0 14px}
+  .masthead h1{color:#fff;font-size:2.9rem;font-weight:900;line-height:1.07;letter-spacing:-.02em;max-width:15ch}
+  .lede{color:#b4c6e0;font-size:1.08rem;line-height:1.6;max-width:62ch;margin:18px 0 0}
+  .meta-strip{display:flex;flex-wrap:wrap;gap:30px;margin-top:32px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+  .meta-item .k{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:#7ba3d4;margin-bottom:4px}
+  .meta-item .v{color:#fff;font-size:14.5px;font-weight:600}
+
+  /* kpi band */
+  .kpi-band{max-width:1080px;margin:-30px auto 0;padding:0 32px;position:relative;z-index:2;
+            display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 20px 18px;
+       box-shadow:0 8px 24px rgba(10,22,40,.08);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+               background:linear-gradient(135deg,#1B51A4,#3B82F6,#06B6D4)}
+  .kpi .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--ink-muted);margin-bottom:8px}
+  .kpi .value{font-family:var(--font-head);font-size:1.95rem;font-weight:800;color:var(--navy);line-height:1.05;letter-spacing:-.02em}
+  .kpi .value .unit{font-size:1.15rem;font-weight:700;vertical-align:.32em;margin-right:1px}
+  .kpi .sub{font-size:12.5px;color:var(--ink-muted);margin-top:7px;line-height:1.45}
+  .up{color:var(--good);font-weight:700}
+  .dn{color:var(--watch);font-weight:700}
+
+  /* sections */
+  section{max-width:1080px;margin:0 auto;padding:52px 32px 0}
+  .sec-head{margin-bottom:22px}
+  .sec-head .eyebrow{color:var(--accent-blue)}
+  .sec-head h2{font-size:1.85rem;font-weight:800;line-height:1.2;letter-spacing:-.015em}
+  .sec-head p{color:var(--ink-muted);max-width:66ch;margin:10px 0 0;font-size:1.02rem}
+
+  .panel{background:linear-gradient(180deg,#fff 0%,#f8f9fc 55%,#fff 100%);
+         border:1px solid var(--border);border-radius:18px;padding:26px 24px 20px;margin-top:6px}
+  .panel.tight{padding:22px 24px 16px}
+  .chart-title{font-family:var(--font-head);font-size:14.5px;font-weight:700;color:var(--heading-navy);margin:0 0 2px}
+  .chart-note{font-size:12.5px;color:var(--ink-muted);margin:0 0 14px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .ax{font-size:11px;fill:var(--ink-subtle);font-family:var(--font-data)}
+  .val{font-size:10.5px;fill:var(--ink-muted);font-family:var(--font-data);
+       paint-order:stroke;stroke:#fbfcfe;stroke-width:3.5px;stroke-linejoin:round}
+  .val.strong{fill:var(--navy);font-weight:700}
+  .mon{font-size:11px;fill:var(--ink-muted)}
+  .era{font-size:11px;fill:var(--ink-subtle);font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+  .era.strong{fill:var(--brand-blue)}
+  .grp{font-size:13px;fill:var(--heading-navy);font-weight:700}
+  .grp .up{fill:var(--good)}
+  .annot{font-size:11px;fill:var(--heading-navy);font-weight:600}
+
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin:14px 0 2px;font-size:12.5px;color:var(--ink-body)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .dash{width:20px;border-top:2px dashed #0a2540;opacity:.6;display:inline-block}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+     color:var(--ink-muted);padding:0 12px 9px;border-bottom:1px solid var(--border)}
+  td{padding:9px 12px;border-bottom:1px solid var(--border-subtle);color:var(--ink-body)}
+  td.n{font-family:var(--font-data);text-align:right;color:var(--ink);white-space:nowrap}
+  td.t{color:var(--ink-muted);font-size:13px}
+  tr.hl td{background:#f2f6fd;font-weight:600;color:var(--navy)}
+  tr.tot td{border-top:1.5px solid var(--border);border-bottom:none;font-weight:700;color:var(--navy)}
+  .table-wrap{overflow-x:auto;margin-top:4px}
+  details{margin-top:14px}
+  summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--brand-blue);padding:6px 0}
+  summary:hover{color:var(--accent-blue)}
+
+  .note{border-left:3px solid var(--accent-blue);background:var(--surface-cool);
+        border-radius:0 12px 12px 0;padding:16px 20px;margin-top:18px;font-size:14.5px;color:var(--ink-body)}
+  .note.watch{border-left-color:#d9a441;background:var(--watch-bg)}
+  .note.good{border-left-color:var(--good);background:var(--good-bg)}
+  .note b{color:var(--heading-navy)}
+  .note .h{display:block;font-family:var(--font-head);font-weight:800;color:var(--heading-navy);
+           font-size:15px;margin-bottom:5px}
+
+  /* product grid */
+  .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+  .prod{border:1px solid var(--border);border-radius:14px;padding:15px 16px 14px;background:#fff}
+  .prod .tag{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;
+             letter-spacing:1px;padding:3px 9px;border-radius:20px;margin-bottom:9px}
+  .prod.live .tag{background:var(--good-bg);color:var(--good)}
+  .prod.ready .tag{background:#eaf1fd;color:var(--brand-blue)}
+  .prod.paused .tag{background:var(--watch-bg);color:var(--watch)}
+  .prod .name{display:block;font-family:var(--font-head);font-weight:800;color:var(--heading-navy);
+              font-size:14.5px;line-height:1.25;margin-bottom:5px}
+  .prod .desc{display:block;font-size:12.5px;color:var(--ink-muted);line-height:1.5}
+  .grid-label{font-family:var(--font-head);font-size:13px;font-weight:800;color:var(--heading-navy);
+              text-transform:uppercase;letter-spacing:.8px;margin:26px 0 12px}
+  .grid-label:first-child{margin-top:0}
+
+  footer{max-width:1080px;margin:56px auto 0;padding:24px 32px 52px;border-top:1px solid var(--border);
+         color:var(--ink-subtle);font-size:12.5px}
+  footer b{color:var(--navy)}
+
+  @media (max-width:900px){
+    .kpi-band{grid-template-columns:repeat(2,1fr)}
+    .two{grid-template-columns:1fr}
+    .prod-grid{grid-template-columns:repeat(2,1fr)}
+    .masthead h1{font-size:2.2rem}
+  }
+  @media (max-width:560px){
+    .masthead{padding:40px 0 52px}
+    .inner{padding:0 20px}
+    section{padding:40px 20px 0}
+    .kpi-band{grid-template-columns:1fr;padding:0 20px}
+    .prod-grid{grid-template-columns:1fr}
+    .masthead h1{font-size:1.9rem}
+    footer{padding:24px 20px 40px}
+  }
+  @media print{
+    body{font-size:12.5px}
+    .masthead{padding:30px 0 34px}
+    .masthead h1{font-size:2rem}
+    .kpi-band{margin-top:-22px;gap:10px}
+    .kpi{box-shadow:none}
+    section{padding:26px 24px 0;break-inside:avoid}
+    .panel{break-inside:avoid}
+    .prod{break-inside:avoid}
+    details{display:none}
+    .orb{display:none}
+  }
+</style>
+
+<body>
+
+<div class="masthead">
+  <div class="orb"></div>
+  <div class="inner">
+    <p class="eyebrow">Chowly &middot; Platform Performance Review</p>
+    <h1>Your fall on Chowly, compared to summer</h1>
+    <p class="lede">This review compares October and November to July and August, your first two full
+      months on Chowly. November is still in progress, so every comparison uses <b style="color:#fff">average
+      sales per day</b> instead of monthly totals.</p>
+    <div class="meta-strip">
+      <div class="meta-item"><span class="k">Prepared for</span><span class="v">Bento Moto &middot; Oakdale, MN</span></div>
+      <div class="meta-item"><span class="k">Reporting period</span><span class="v">Jul 1 &ndash; Nov 19, 2026</span></div>
+      <div class="meta-item"><span class="k">Report date</span><span class="v">November 20, 2026</span></div>
+      <div class="meta-item"><span class="k">Prepared by</span><span class="v">Jesse Gorin, Customer Success</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="kpi-band">
+  <div class="kpi">
+    <div class="label">November daily sales</div>
+    <div class="value"><span class="unit">$</span>299</div>
+    <div class="sub"><span class="up">+18.8%</span> vs your July and August average of $251 a day</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Orders per day</div>
+    <div class="value">7.8</div>
+    <div class="sub">October and November &middot; <span class="up">+10.1%</span> vs 7.0 over the summer</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Sales through Chowly</div>
+    <div class="value"><span class="unit">$</span>12,600</div>
+    <div class="sub">388 orders from October 1 through November 19</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Direct ordering share</div>
+    <div class="value">47.5%</div>
+    <div class="sub">$5,991 through your own ordering page, with no marketplace commission</div>
+  </div>
+</div>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Month by month</p>
+    <h2>A slow October, then your strongest month yet</h2>
+    <p>Each bar is the average sales per day for that month, split by channel. Taken together,
+      October and November are level with the summer at $252 a day against $251. That combines
+      a soft October with a November that is running well ahead of every month before it.</p>
+  </div>
+  <div class="panel">
+    <p class="chart-title">Average daily sales through Chowly, by month</p>
+    <p class="chart-note">Food and beverage sales before tax, tips and delivery fees. November covers the 1st through the 19th.</p>
+<svg viewBox="0 0 880 290" role="img" aria-label="Average daily sales through Chowly by month and channel, July through November 19, 2026">
+<line x1="66" y1="258.0" x2="862" y2="258.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="262.0" text-anchor="end" class="ax">$0</text>
+<line x1="66" y1="198.0" x2="862" y2="198.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="202.0" text-anchor="end" class="ax">$80</text>
+<line x1="66" y1="138.0" x2="862" y2="138.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="142.0" text-anchor="end" class="ax">$160</text>
+<line x1="66" y1="78.0" x2="862" y2="78.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="82.0" text-anchor="end" class="ax">$240</text>
+<line x1="66" y1="18.0" x2="862" y2="18.0" stroke="#e8edf6" stroke-width="1"/>
+<text x="54" y="22.0" text-anchor="end" class="ax">$320</text>
+<line x1="67" y1="69.5" x2="862" y2="69.5" stroke="#0a2540" stroke-width="1.5" stroke-dasharray="5 4" opacity=".55"/>
+<rect x="108.6" y="166.9" width="74" height="91.1" fill="#1B51A4"/>
+<rect x="108.6" y="103.0" width="74" height="63.9" fill="#06B6D4"/>
+<rect x="108.6" y="80.8" width="74" height="22.2" fill="#93c5fd"/>
+<rect x="108.6" y="75.0" width="74" height="5.8" fill="#0a2540"/>
+<text x="145.6" y="67.0" text-anchor="middle" class="val">$244/day</text>
+<text x="145.6" y="276" text-anchor="middle" class="mon">Jul</text>
+<rect x="267.8" y="165.3" width="74" height="92.7" fill="#1B51A4"/>
+<rect x="267.8" y="93.1" width="74" height="72.2" fill="#06B6D4"/>
+<rect x="267.8" y="68.1" width="74" height="25.0" fill="#93c5fd"/>
+<rect x="267.8" y="64.1" width="74" height="4.0" fill="#0a2540"/>
+<text x="304.8" y="56.1" text-anchor="middle" class="val">$259/day</text>
+<text x="304.8" y="276" text-anchor="middle" class="mon">Aug</text>
+<rect x="427.0" y="171.1" width="74" height="86.9" fill="#1B51A4"/>
+<rect x="427.0" y="99.1" width="74" height="72.0" fill="#06B6D4"/>
+<rect x="427.0" y="73.0" width="74" height="26.1" fill="#93c5fd"/>
+<rect x="427.0" y="65.6" width="74" height="7.4" fill="#0a2540"/>
+<text x="464.0" y="57.6" text-anchor="middle" class="val">$256/day</text>
+<text x="464.0" y="276" text-anchor="middle" class="mon">Sep</text>
+<rect x="586.2" y="179.6" width="74" height="78.4" fill="#1B51A4"/>
+<rect x="586.2" y="110.9" width="74" height="68.7" fill="#06B6D4"/>
+<rect x="586.2" y="97.4" width="74" height="13.5" fill="#93c5fd"/>
+<rect x="586.2" y="90.4" width="74" height="6.9" fill="#0a2540"/>
+<text x="623.2" y="82.4" text-anchor="middle" class="val">$223/day</text>
+<text x="623.2" y="276" text-anchor="middle" class="mon">Oct</text>
+<rect x="745.4" y="149.4" width="74" height="108.6" fill="#1B51A4"/>
+<rect x="745.4" y="73.0" width="74" height="76.4" fill="#06B6D4"/>
+<rect x="745.4" y="53.7" width="74" height="19.3" fill="#93c5fd"/>
+<rect x="745.4" y="34.0" width="74" height="19.7" fill="#0a2540"/>
+<text x="782.4" y="26.0" text-anchor="middle" class="val strong">$299/day</text>
+<text x="782.4" y="276" text-anchor="middle" class="mon">Nov 1–19</text>
+<line x1="66" y1="258" x2="862" y2="258" stroke="#94a3b8" stroke-width="1"/>
+</svg>
+    <div class="legend">
+      <span><i class="dot" style="background:#1B51A4"></i> Chowly Online Ordering</span>
+      <span><i class="dot" style="background:#06B6D4"></i> DoorDash</span>
+      <span><i class="dot" style="background:#93c5fd"></i> Uber Eats</span>
+      <span><i class="dot" style="background:#0a2540"></i> Grubhub</span>
+      <span><i class="dash"></i> July and August average, $251 a day</span>
+    </div>
+    <details>
+      <summary>Show the underlying numbers</summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Month</th><th style="text-align:right">Days</th><th style="text-align:right">Orders</th><th style="text-align:right">Sales</th><th style="text-align:right">Per day</th></tr></thead>
+          <tbody>
+            <tr><td>July</td><td class="n">31</td><td class="n">214</td><td class="n">$7,564.15</td><td class="n">$244.00</td></tr>
+            <tr><td>August</td><td class="n">31</td><td class="n">223</td><td class="n">$8,014.75</td><td class="n">$258.54</td></tr>
+            <tr><td>September</td><td class="n">30</td><td class="n">230</td><td class="n">$7,694.83</td><td class="n">$256.49</td></tr>
+            <tr><td>October</td><td class="n">31</td><td class="n">212</td><td class="n">$6,926.24</td><td class="n">$223.43</td></tr>
+            <tr class="hl"><td>November 1&ndash;19</td><td class="n">19</td><td class="n">176</td><td class="n">$5,673.82</td><td class="n">$298.62</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">By channel</p>
+    <h2>Where the orders came from</h2>
+    <p>You are taking more orders per day than in the summer, but the average order is smaller:
+      $32.47 against $35.65. That is why sales held level while order count grew.</p>
+  </div>
+  <div class="panel tight">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Channel</th>
+          <th style="text-align:right">Jul&ndash;Aug orders</th><th style="text-align:right">Jul&ndash;Aug sales</th>
+          <th style="text-align:right">Oct&ndash;Nov orders</th><th style="text-align:right">Oct&ndash;Nov sales</th>
+          <th style="text-align:right">Sales per day</th>
+        </tr></thead>
+        <tbody>
+          <tr class="hl"><td>Chowly Online Ordering (direct)</td><td class="n">202</td><td class="n">$7,599.90</td><td class="n">177</td><td class="n">$5,991.08</td><td class="n">&minus;2.2%</td></tr>
+          <tr><td>DoorDash</td><td class="n">161</td><td class="n">$5,622.25</td><td class="n">154</td><td class="n">$4,774.89</td><td class="n"><span class="up">+5.3%</span></td></tr>
+          <tr><td>Uber Eats</td><td class="n">64</td><td class="n">$1,952.93</td><td class="n">33</td><td class="n">$1,048.06</td><td class="n"><span class="dn">&minus;33.5%</span></td></tr>
+          <tr><td>Grubhub</td><td class="n">10</td><td class="n">$403.82</td><td class="n">24</td><td class="n">$786.03</td><td class="n"><span class="up">+141.4%</span></td></tr>
+          <tr class="tot"><td>Total</td><td class="n">437</td><td class="n">$15,578.90</td><td class="n">388</td><td class="n">$12,600.06</td><td class="n">+0.3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="chart-note" style="margin:12px 0 0">Jul&ndash;Aug covers 62 days and Oct&ndash;Nov covers 50, so the last column compares average sales per day.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">What to watch</p>
+    <h2>Two things worth a conversation</h2>
+  </div>
+  <div class="note watch">
+    <span class="h">Uber Eats has dropped by about half</span>
+    Uber Eats went from roughly 32 orders a month over the summer to 18 in October and 15 so far in November.
+    DoorDash and Grubhub both grew over the same stretch, so this looks specific to Uber Eats rather than a
+    drop in demand. It is worth checking your store's visibility, hours and any promotions on that app.
+  </div>
+  <div class="note">
+    <span class="h">Your Google ads have been running again since October 28</span>
+    Through November 19 they have shown <b>14,207 times</b> and sent <b>577 clicks</b> to your ordering page.
+    Over the same weeks, direct ordering is averaging <b>$145 a day</b> in November, its best month since you
+    switched. Order-level ad tracking is not connected yet, so this report does not credit any specific sales
+    to the ads.
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">The full picture</p>
+    <h2>Everything Chowly is running for you</h2>
+    <p>The products live on your account today, and the ones already included that you have not switched on yet.</p>
+  </div>
+  <div class="panel tight">
+    <p class="grid-label">Live today</p>
+    <div class="prod-grid">
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Chowly Online Ordering</span>
+        <span class="desc">Your own ordering page and checkout. 177 orders and $5,991 since October 1.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Lightspeed POS integration</span>
+        <span class="desc">Every order in this report drops straight into Breadcrumb, with nothing re-keyed by hand.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Google Search Ads</span>
+        <span class="desc">Running again since October 28, pointed at your ordering page.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">DoorDash integration</span>
+        <span class="desc">154 orders since October 1, injected into your POS automatically.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Uber Eats integration</span>
+        <span class="desc">33 orders since October 1, injected into your POS automatically.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Grubhub integration</span>
+        <span class="desc">24 orders since October 1, injected into your POS automatically.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Guest surveys</span>
+        <span class="desc">Diners are asked for feedback after ordering, and the responses come back to you.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Revenue recovery</span>
+        <span class="desc">We audit your marketplace payouts and chase back orders that were cancelled,
+          refunded or charged incorrectly.</span></div>
+      <div class="prod live"><span class="tag">Live</span>
+        <span class="name">Google Business Profile</span>
+        <span class="desc">Chowly manages your Google listing and has it linked to your ads account.</span></div>
+    </div>
+
+    <p class="grid-label">Included, not switched on yet</p>
+    <div class="prod-grid">
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Email marketing</span>
+        <span class="desc">Every direct order captures a guest name and email, so your list keeps growing
+          whether you send to it or not. The holidays are a natural first campaign.</span></div>
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Loyalty</span>
+        <span class="desc">Gives repeat diners a reason to order direct instead of through an app.</span></div>
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Website builder</span>
+        <span class="desc">A site build is included on your account and has not been started.</span></div>
+      <div class="prod ready"><span class="tag">Ready</span>
+        <span class="name">Dynamic Pricing</span>
+        <span class="desc">Lifts your marketplace menu prices to offset the commission those platforms charge.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <p class="eyebrow">Method</p>
+    <h2>What these numbers cover</h2>
+  </div>
+  <div class="panel tight">
+    <p style="margin-top:0;font-size:14.5px">
+      <b style="color:var(--heading-navy)">Where the figures come from.</b> Every figure is from Chowly's order
+      records and counts completed orders only. Sales are food and beverage before tax, tips and delivery fees.
+    </p>
+    <p style="font-size:14.5px">
+      <b style="color:var(--heading-navy)">Why July and August look slightly lower than last time.</b> The
+      September review counted every order record, including 7 orders that were resubmitted (and so appeared
+      twice) and 6 that failed to go through. This review leaves those out, which lowers July and August by
+      $433.78 in total. The same rule applies to every month here, so the comparison is like for like.
+    </p>
+    <p style="font-size:14.5px;margin-bottom:6px">
+      <b style="color:var(--heading-navy)">What this does not measure.</b> This report covers online and
+      marketplace orders only. It does not include dine-in or counter sales, so it is not a picture of total
+      restaurant revenue. Seasonal patterns also differ between summer and fall, so part of any change may be
+      the time of year rather than the channel.
+    </p>
+  </div>
+</section>
+
+<footer>
+  Prepared by <b>Chowly</b> for Bento Moto &middot; November 20, 2026 &middot; Questions? Reply to Jesse Gorin
+  or raise it on our monthly sync. &nbsp;chowly.com
+</footer>
+
+</body>
+</html>
